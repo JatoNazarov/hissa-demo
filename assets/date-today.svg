@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Date_today_light">
+<rect id="Rectangle 25" x="2" y="3.47489" width="12" height="10" rx="2" stroke="#12B76A"/>
+<path id="Rectangle 26" d="M2 6.14155C2 5.52157 2 5.21158 2.06815 4.95725C2.25308 4.26707 2.79218 3.72797 3.48236 3.54304C3.7367 3.47489 4.04669 3.47489 4.66666 3.47489H11.3333C11.9533 3.47489 12.2633 3.47489 12.5176 3.54304C13.2078 3.72797 13.7469 4.26707 13.9319 4.95725C14 5.21158 14 5.52157 14 6.14155V6.14155H2V6.14155Z" fill="#12B76A"/>
+<path id="Line 1" d="M4.66666 1.47489L4.66666 3.47489" stroke-linecap="round" stroke="#12B76A"/>
+<path id="Line 2" d="M11.3333 1.47489L11.3333 3.47489" stroke-linecap="round" stroke="#12B76A"/>
+</g>
+</svg>
