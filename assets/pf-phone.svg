@@ -1,0 +1,14 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Phone">
+<mask id="stroke0_0_259" maskUnits="userSpaceOnUse" x="8" y="17.5" width="8" height="5" fill="black">
+<rect fill="white" x="8" y="17.5" width="8" height="5"/>
+<path d="M13 19.5H11C10.5286 19.5 10.2929 19.5 10.1464 19.6464C10 19.7929 10 20.0286 10 20.5H14C14 20.0286 14 19.7929 13.8536 19.6464C13.7071 19.5 13.4714 19.5 13 19.5Z"/>
+</mask>
+<path id="Vector 130" d="M11 19.5H13C13.4714 19.5 13.7071 19.5 13.8536 19.6464C14 19.7929 14 20.0286 14 20.5H10C10 20.0286 10 19.7929 10.1464 19.6464C10.2929 19.5 10.5286 19.5 11 19.5Z" stroke-width="3" stroke-linejoin="round" stroke="#FF655B" mask="url(#stroke0_0_259)"/>
+<mask id="stroke1_0_259" fill="white">
+<path d="M6 18C6 19.8856 6 20.8284 6.58579 21.4142C7.17157 22 8.11438 22 10 22H14C15.8856 22 16.8284 22 17.4142 21.4142C18 20.8284 18 19.8856 18 18V6C18 4.11438 18 3.17157 17.4142 2.58579C16.8284 2 15.8856 2 14 2H10C8.11438 2 7.17157 2 6.58579 2.58579C6 3.17157 6 4.11438 6 6V18Z"/>
+</mask>
+<path id="Rectangle 4016" d="M10 2H14C15.8856 2 16.8284 2 17.4142 2.58579C18 3.17157 18 4.11438 18 6V18C18 19.8856 18 20.8284 17.4142 21.4142C16.8284 22 15.8856 22 14 22H10C8.11438 22 7.17157 22 6.58579 21.4142C6 20.8284 6 19.8856 6 18V6C6 4.11438 6 3.17157 6.58579 2.58579C7.17157 2 8.11438 2 10 2Z" stroke-width="3" stroke-linejoin="round" stroke="#FF655B" mask="url(#stroke1_0_259)"/>
+<circle id="Ellipse 126" cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 7)" fill="#FF655B"/>
+</g>
+</svg>

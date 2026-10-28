@@ -425,6 +425,22 @@ img{display:block;max-width:none}
 .lm-pad{height:24px}
 
 .sh-foot{flex:none;padding:12px 20px 0}
+/* ---------- PROFILE ---------- */
+.pf-top{display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:calc(var(--sat) + 16px)}
+.pf-ava{width:80px;height:80px;border-radius:999px;background:var(--brand);box-shadow:inset 0 28px 32px rgba(255,101,91,.9),inset 8px -28px 32px rgba(37,99,235,.8),inset -28px -28px 32px rgba(167,243,208,.8);display:grid;place-items:center;color:#fff;font-weight:700;font-size:32px;line-height:40px;letter-spacing:-.64px}
+.pf-name{font-weight:700;font-size:28px;line-height:36px;letter-spacing:-.56px;text-align:center}
+.pf{display:flex;flex-direction:column;gap:12px;margin-top:24px;margin-bottom:32px}
+.pf-g{border-radius:24px;background:var(--surface);box-shadow:0 1px 1.5px rgba(12,17,29,.04),0 12px 8px rgba(12,17,29,.02);overflow:hidden}
+.pf-r{display:flex;align-items:center;gap:16px;padding:12px 16px;width:100%;text-align:left;min-height:48px}
+.pf-g.solo .pf-r{padding:16px}
+.pf-r .l{flex:1;min-width:0;display:flex;align-items:center;gap:12px;font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px}
+.pf-r img{width:24px;height:24px;flex:none}
+.seg{display:flex;gap:2px;padding:2px;border-radius:999px;background:var(--sunken)}
+.seg button{padding:6px 12px;border-radius:999px;font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text);transition:background .2s,color .2s}
+.seg button.on{background:#667085;color:#fff}
+#profile .toolbar{position:absolute;left:0;right:0;top:0;background:none;z-index:5;pointer-events:none}
+#profile .toolbar .glass-btn{pointer-events:auto}
+
 /* toast */
 .toast{position:absolute;left:50%;top:calc(var(--sat) + 12px);z-index:90;transform:translate(-50%,-180%);opacity:0;visibility:hidden;padding:12px 16px;border-radius:16px;background:#0c111d;color:#fff;font-weight:600;font-size:14px;line-height:20px;max-width:calc(100% - 32px);text-align:center;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .2s,visibility .3s;pointer-events:none}
 .toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
@@ -519,7 +535,7 @@ function calc(term, useCash) {
 const root = $('#screens');
 const screens = {};
 function mk(id) { const el = document.createElement('section'); el.className = 'screen'; el.id = id; el.dataset.pos = 'right'; root.appendChild(el); screens[id] = el; return el; }
-['home','limit','scan','checkout','success','receipt'].forEach(mk);
+['home','limit','profile','scan','checkout','success','receipt'].forEach(mk);
 let current = null;
 function go(id, dir = 'forward', instant = false) {
   const next = screens[id], prev = current && screens[current];
@@ -608,7 +624,7 @@ render.home = function () {
       <div class="tb"><button class="ico" data-act="soon" aria-label="Поиск"><img src="${A}search.svg" alt=""></button>
         <button class="ico hide-ico" data-act="soon" aria-label="Скрыть баланс"><img src="${A}hide.svg" alt=""></button>
         <button class="ico" data-act="soon" aria-label="Сообщения"><img src="${A}messages.svg" alt=""><span class="badge-dot"></span></button></div>
-      <button class="avatar" data-act="soon" aria-label="Профиль">SX</button></div>
+      <button class="avatar" data-act="profile" aria-label="Профиль">AK</button></div>
     <div class="bal">
       <button class="bal-lbl" data-act="soon">Баланс карт <img src="${A}expand-small.svg" width="16" height="16" alt=""></button>
       <div class="bal-num"><b class="tnum" id="balNum">${fmt(S.balance)}</b><i>сум</i></div>
@@ -717,6 +733,34 @@ render.limit = function () {
     </div>
     <div class="lm-pad"></div>
     <div class="lm-foot"><button class="cta" data-act="scan"><img src="${A}scan-alt.svg" alt="">Сканировать QR-код</button></div></div>`;
+};
+
+/* ---------- PROFILE ---------- */
+let pfBio = true, pfLang = 'РУС';
+render.profile = function () {
+  const row = (ico, label, right = `<img src="${A}pf-chev.svg" alt="">`, extra = '') => `<div class="pf-r"${extra}><span class="l"><img src="${A}${ico}" alt="">${label}</span>${right}</div>`;
+  const link = (ico, label) => `<button class="pf-r" data-act="soon"><span class="l"><img src="${A}${ico}" alt="">${label}</span><img src="${A}pf-chev.svg" alt=""></button>`;
+  screens.profile.innerHTML = `<div class="sc-in">
+    <div class="toolbar">${back()}</div>
+    <div class="pf-top"><div class="pf-ava">AK</div><div class="pf-name">Amir K.</div></div>
+    <div class="col pf">
+      <div class="pf-g solo">${link('pf-user.svg', 'Персональные данные')}</div>
+      <div class="pf-g">
+        ${link('pf-phone.svg', 'Устройства')}
+        ${link('pf-pass.svg', 'Изменить код для входа')}
+        ${row('pf-bio.svg', 'Вход по биометрии', `<button class="sw${pfBio ? ' on' : ''}" data-act="bio" role="switch" aria-checked="${pfBio}" aria-label="Вход по биометрии"></button>`)}
+      </div>
+      <div class="pf-g">
+        ${link('pf-theme.svg', 'Тема и иконка приложения')}
+        ${row('pf-lang.svg', 'Язык', `<span class="seg" role="radiogroup" aria-label="Язык">${['O’ZB','РУС','ENG'].map(l => `<button class="${l === pfLang ? 'on' : ''}" data-lang="${l}" role="radio" aria-checked="${l === pfLang}">${l}</button>`).join('')}</span>`)}
+      </div>
+      <div class="pf-g">
+        ${link('pf-info.svg', 'О приложении')}
+        ${link('pf-offer.svg', 'Публичная оферта')}
+        ${link('pf-terms.svg', 'Условия пользования')}
+      </div>
+      <div class="pf-g solo">${link('pf-exit.svg', 'Выйти')}</div>
+    </div></div>`;
 };
 
 /* ---------- SCANNER ---------- */
@@ -896,10 +940,11 @@ function schedSheet(L) {
 
 /* ---------- events ---------- */
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-act],[data-term],[data-card],[data-lterm],[data-q]');
+  const t = e.target.closest('[data-act],[data-term],[data-card],[data-lterm],[data-q],[data-lang]');
   if (!t || !t.closest('#phone, .side, #present')) return;
   if (t.tagName === 'A') e.preventDefault();
   if (t.dataset.term) { e.stopPropagation(); co.term = +t.dataset.term; rr('checkout'); return; }
+  if (t.dataset.lang) { pfLang = t.dataset.lang; rr('profile'); return; }
   if (t.dataset.lterm) { lmTerm = +t.dataset.lterm; rr('limit'); return; }
   if (t.dataset.q) { const o = t.classList.toggle('open'); t.firstElementChild.setAttribute('aria-expanded', o); return; }
   if (t.dataset.card) { co.card = t.dataset.card; closeSheet(); rr('checkout'); return; }
@@ -909,9 +954,11 @@ document.addEventListener('click', e => {
     case 'soon': toast(SOON); break;
     case 'scan': S.coachDone = true; go('scan'); break;
     case 'limit': lmTerm = 12; go('limit'); break;
+    case 'profile': go('profile'); break;
+    case 'bio': pfBio = !pfBio; rr('profile'); break;
     case 'coach-x': S.coachDone = true; rr('home'); break;
     case 'back':
-      if (current === 'scan' || current === 'checkout' || current === 'limit') go('home', 'back');
+      if (current === 'scan' || current === 'checkout' || current === 'limit' || current === 'profile') go('home', 'back');
       else if (current === 'receipt') go('success', 'back');
       break;
     case 'm-inst': if (co.method !== 'inst') { co.method = 'inst'; rr('checkout'); } break;
