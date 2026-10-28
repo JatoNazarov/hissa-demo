@@ -11,7 +11,7 @@
 <meta name="description" content="Интерактивный прототип приложения Hissa: оплата по QR в рассрочку">
 <link rel="icon" href="assets/hissa-icon.svg" type="image/svg+xml">
 <script>
-window.__BUILD = '20261028120336';
+window.__BUILD = '20261028122544';
 (function () {
   // GitHub Pages caches pages for ~10 min. If a newer build exists, reload once with a cache-busting query.
   try {
@@ -214,12 +214,12 @@ img{display:block;max-width:none}
 
 /* ---------- SCANNER ---------- */
 #scan{background:#0b0d12;overflow:hidden;color:#fff}
-.scan-photo{position:absolute;left:50%;top:calc(var(--sat) - 62px);width:max(402px,100%);height:874px;transform:translateX(-50%);object-fit:cover;object-position:center}
+.scan-photo{position:absolute;left:0;top:0;width:402px;height:874px;max-width:none;transform-origin:0 0}
 .scan-hole{position:absolute;left:50%;top:calc(var(--sat) + 244px);width:338px;height:338px;margin-left:-169px;border-radius:28px;box-shadow:0 0 0 2000px rgba(12,17,29,.52)}
-.scan-frame{position:absolute;inset:-3px;width:auto;height:auto}
+.scan-frame{position:absolute;left:-3px;top:-3px;width:calc(100% + 6px);height:calc(100% + 6px);max-width:none}
 .scan-frame.ok{filter:hue-rotate(110deg) saturate(1.2)}
 .scan-line{position:absolute;left:24px;right:24px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--brand),transparent);box-shadow:0 0 16px var(--brand);animation:sweep 1.4s ease-in-out infinite alternate}
-@keyframes sweep{from{top:20px}to{top:316px}}
+@keyframes sweep{from{top:6%}to{top:94%}}
 .scan-txt{position:absolute;left:20px;right:20px;top:calc(var(--sat) + 86px);text-align:center;display:flex;flex-direction:column;gap:12px}
 .scan-txt b{font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px}
 .scan-txt span{font-weight:500;font-size:14px;line-height:20px;color:rgba(255,255,255,.6);letter-spacing:-.28px}
@@ -961,6 +961,26 @@ render.profile = function () {
 };
 
 /* ---------- SCANNER ---------- */
+
+/* Scanner frame: centred on screen height, kept between the hint text and the bottom button;
+   the camera photo is scaled/moved so the printed QR stays inside the frame. */
+function fitScan() {
+  const el = screens.scan; if (!el || !el.querySelector('.scan-hole')) return;
+  const hole = el.querySelector('.scan-hole'), photo = el.querySelector('.scan-photo');
+  const txt = el.querySelector('.scan-txt'), btn = el.querySelector('.scan-bottom');
+  const W = el.clientWidth, H = el.clientHeight;
+  const minTop = txt.offsetTop + txt.offsetHeight + 24, maxBottom = btn.offsetTop - 24;
+  const size = Math.max(160, Math.min(338, W - 64, maxBottom - minTop));
+  let top = (H - size) / 2;
+  top = Math.min(Math.max(top, minTop), maxBottom - size);
+  const left = (W - size) / 2;
+  Object.assign(hole.style, { top: top + 'px', left: left + 'px', width: size + 'px', height: size + 'px', marginLeft: '0' });
+  // In the 402x874 photo the printed QR sits in a 338px box at (32, 306).
+  const cx = left + size / 2, cy = top + size / 2;
+  const sc = Math.max(size / 338, W / 402, cy / 475, (H - cy) / 399);
+  photo.style.transform = `translate(${cx - 201 * sc}px, ${cy - 475 * sc}px) scale(${sc})`;
+}
+addEventListener('resize', () => { if (current === 'scan') fitScan(); });
 let scanTimers = [];
 function stopScan() { scanTimers.forEach(clearTimeout); scanTimers = []; }
 render.scan = function () {
@@ -972,6 +992,7 @@ render.scan = function () {
     <button class="glass-btn r dark" data-act="soon" aria-label="Фонарик"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 3 6 13h5l-1 8 7-10h-5l1-8Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
     <div class="scan-txt"><b>Наведите камеру на QR-код</b><span>Рассрочку можно выбрать после сканирования</span></div>
     <button class="scan-bottom" data-act="soon">Выбрать из фото</button>`;
+  fitScan(); requestAnimationFrame(fitScan);
   stopScan();
   scanTimers.push(setTimeout(() => {
     const l = $('#sline'); if (l) l.remove();
