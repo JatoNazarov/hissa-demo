@@ -11,7 +11,7 @@
 <meta name="description" content="Интерактивный прототип приложения Hissa: оплата по QR в рассрочку">
 <link rel="icon" href="assets/hissa-icon.svg" type="image/svg+xml">
 <script>
-window.__BUILD = '20261028120014';
+window.__BUILD = '20261028120254';
 (function () {
   // GitHub Pages caches pages for ~10 min. If a newer build exists, reload once with a cache-busting query.
   try {
@@ -224,7 +224,7 @@ img{display:block;max-width:none}
 .scan-txt b{font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px}
 .scan-txt span{font-weight:500;font-size:14px;line-height:20px;color:rgba(255,255,255,.6);letter-spacing:-.28px}
 .scan-title{position:absolute;left:0;right:0;top:calc(var(--sat) + 8px);text-align:center;font-family:var(--ios);font-weight:600;font-size:17px;line-height:44px}
-.scan-found{position:absolute;left:0;right:0;margin-inline:auto;width:fit-content;top:calc(var(--sat) + 602px);display:flex;align-items:center;gap:8px;padding:10px 16px 10px 10px;border-radius:999px;background:#fff;color:var(--text);font-weight:700;font-size:14px;white-space:nowrap;box-shadow:0 12px 24px rgba(0,0,0,.25);animation:rise .3s both}
+.scan-found{position:absolute;left:0;right:0;margin-inline:auto;width:fit-content;bottom:calc(100% + 20px);display:flex;align-items:center;gap:8px;padding:10px 16px 10px 10px;border-radius:999px;background:#fff;color:var(--text);font-weight:700;font-size:14px;white-space:nowrap;box-shadow:0 12px 24px rgba(0,0,0,.25);animation:rise .3s both}
 .scan-found img{width:28px;height:22px}
 .scan-bottom{position:absolute;left:20px;right:20px;bottom:max(32px,calc(var(--sab) + 12px));height:56px;border-radius:999px;border:1px solid #e4e7ec;font-weight:700;font-size:16px;color:#fff}
 
@@ -966,12 +966,11 @@ function stopScan() { scanTimers.forEach(clearTimeout); scanTimers = []; }
 render.scan = function () {
   screens.scan.innerHTML = `
     <img class="scan-photo" src="${A}scan-photo.jpg" alt="">
-    <div class="scan-hole"><img class="scan-frame" id="sframe" src="${A}scan-frame.svg" alt=""><div class="scan-line" id="sline"></div></div>
+    <div class="scan-hole"><img class="scan-frame" id="sframe" src="${A}scan-frame.svg" alt=""><div class="scan-line" id="sline"></div><div id="sfound"></div></div>
     <div class="scan-title">QR оплата</div>
     ${back('dark')}
     <button class="glass-btn r dark" data-act="soon" aria-label="Фонарик"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 3 6 13h5l-1 8 7-10h-5l1-8Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
     <div class="scan-txt"><b>Наведите камеру на QR-код</b><span>Рассрочку можно выбрать после сканирования</span></div>
-    <div id="sfound"></div>
     <button class="scan-bottom" data-act="soon">Выбрать из фото</button>`;
   stopScan();
   scanTimers.push(setTimeout(() => {
