@@ -11,7 +11,7 @@
 <meta name="description" content="Интерактивный прототип приложения Hissa: оплата по QR в рассрочку">
 <link rel="icon" href="assets/hissa-icon.svg" type="image/svg+xml">
 <script>
-window.__BUILD = '20261028115419';
+window.__BUILD = '20261028120014';
 (function () {
   // GitHub Pages caches pages for ~10 min. If a newer build exists, reload once with a cache-busting query.
   try {
@@ -154,7 +154,7 @@ img{display:block;max-width:none}
 .offer p{position:absolute;left:12px;bottom:12px;margin:0;width:88px;font-weight:700;font-size:12px;line-height:13px;letter-spacing:-.24px}
 .offer .oi{position:absolute;left:10px;top:10px;width:28px;height:28px;overflow:hidden}
 .hot{display:grid;grid-template-columns:repeat(4,60px);justify-content:space-between;margin:32px auto 0;width:calc(100% - 66px)}
-.hp{width:60px;display:flex;flex-direction:column;align-items:center;gap:8px;white-space:nowrap;font-weight:700;font-size:10px;line-height:12px;letter-spacing:-.2px;text-align:center}
+.hp{width:60px;display:flex;flex-direction:column;align-items:center;gap:8px;white-space:pre;font-weight:700;font-size:10px;line-height:12px;letter-spacing:-.2px;text-align:center}
 .hp .b{position:relative;width:60px;height:60px;border-radius:20px;background:var(--sunken)}
 .hp .b img{position:absolute;width:64px;height:64px;left:-8px;top:-8px;filter:drop-shadow(6px 6px 8px rgba(12,17,29,.04))}
 .cb{position:absolute;right:-2px;bottom:-2px;padding:1px 3px;border-radius:40px;background:var(--success2);border:2px solid var(--bg);color:#fff;font-weight:700;font-size:10px;line-height:12px}
@@ -572,6 +572,7 @@ function updateStatusbar() { $('#statusbar').classList.toggle('dark', current ==
 
 
 function postRender(el) {
+  translateTree(el);
   const sc = el.querySelector('.sc-in'); if (!sc) return;
   el.classList.add('has-sc');
   const dock = sc.querySelector(':scope > .dock, :scope > .bottom-btns, :scope > .lm-foot, :scope > .hdock');
@@ -587,8 +588,189 @@ function rr(id, keep = true) {
   render[id](); postRender(el);
   const sc = el.querySelector('.sc-in'); if (sc) sc.scrollTop = top;
 }
+/* ---------- I18N (RU source → UZ / EN) ---------- */
+let LANG = 'ru';
+const L = (uz, en) => LANG === 'uz' ? uz : en;
+const MON_RU = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const MON_UZ = ['yanvar','fevral','mart','aprel','may','iyun','iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
+const MON_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DICT = {
+  'Этот раздел пока в разработке': ['Bu bo‘lim hali ishlab chiqilmoqda', 'This section is still in development'],
+  'В приложении здесь откроется «Поделиться»': ['Ilovada bu yerda «Ulashish» oynasi ochiladi', 'The share sheet will open here in the app'],
+  'Баланс карт': ['Kartalar balansi', 'Card balance'],
+  '+ Кешбэк': ['+ Keshbek', '+ Cashback'],
+  'Доступно в рассрочку': ['Muddatli to‘lovga mavjud', 'Available for installments'],
+  'Перевести на карту': ['Kartaga o‘tkazish', 'Transfer to card'],
+  'Мой дом': ['Mening uyim', 'My home'],
+  'Мониторинг': ['Monitoring', 'Monitoring'],
+  'QR оплата': ['QR to‘lov', 'QR pay'],
+  'Без % и без переплат': ['Foizsiz va ortiqcha to‘lovsiz', 'No interest, no overpayment'],
+  'Двойной кешбэк в Корзинке': ['Korzinka’da ikki barobar keshbek', 'Double cashback at Korzinka'],
+  'Связь': ['Aloqa', 'Mobile'],
+  'Гос услуги': ['Davlat\nxizmatlari', 'Gov\nservices'],
+  'Сохраненные': ['Saqlangan', 'Saved'],
+  'платежи': ['to‘lovlar', 'payments'],
+  'Все платежи': ['Barcha\nto‘lovlar', 'All\npayments'],
+  'Текущие рассрочки': ['Joriy muddatli to‘lovlar', 'Current installments'],
+  'Все рассрочки': ['Barchasi', 'View all'],
+  'Магазины рядом': ['Yaqin do‘konlar', 'Stores nearby'],
+  'Все магазины': ['Barchasi', 'View all'],
+  'Посмотреть на карте': ['Xaritada ko‘rish', 'View on map'],
+  'Обзор': ['Asosiy', 'Overview'],
+  'Переводы': ['O‘tkazmalar', 'Transfers'],
+  'Предложения': ['Takliflar', 'Offers'],
+  'Демо Hissa': ['Hissa demo', 'Hissa demo'],
+  'Вы на кассе Korzinka': ['Siz Korzinka kassasidasiz', 'You’re at the Korzinka checkout'],
+  'Платеж просрочен': ['To‘lov muddati o‘tgan', 'Payment overdue'],
+  'сум в месяц': ['so‘m oyiga', 'UZS per month'],
+  'Ваша карта рассрочки': ['Muddatli to‘lov kartangiz', 'Your installment card'],
+  'Выберите срок рассрочки': ['Muddatni tanlang', 'Choose a term'],
+  'Способы оплаты': ['To‘lov usullari', 'Payment methods'],
+  'По': ['QR-kod', 'By'],
+  'QR-коду': ['orqali', 'QR code'],
+  'Картой': ['Karta', 'Card'],
+  'Картой hissa': ['Hissa kartasi', 'Hissa card'],
+  'только на 3 мес': ['faqat 3 oyga', '3 months only'],
+  'Без переплаты': ['Ortiqcha to‘lovsiz', 'No overpayment'],
+  'без переплаты': ['ortiqcha to‘lovsiz', 'no overpayment'],
+  'Есть небольшая переплата': ['Ozgina ortiqcha to‘lov bor', 'Small overpayment applies'],
+  'Осталось': ['Qoldi', 'Remaining'],
+  'Потрачено': ['Sarflandi', 'Spent'],
+  'Магазины-партнёры': ['Hamkor do‘konlar', 'Partner stores'],
+  'Где купить с меньшей переплатой': ['Kamroq ortiqcha to‘lov bilan xarid qiling', 'Where to buy with a lower overpayment'],
+  'Договор': ['Shartnoma', 'Contract'],
+  'и условия': ['va shartlar', 'and terms'],
+  'Позвонить': ['Yordam', 'Call'],
+  'в поддержку': ['xizmatiga qo‘ng‘iroq', 'support'],
+  'Частые вопросы': ['Ko‘p beriladigan savollar', 'FAQ'],
+  'Все вопросы': ['Barcha savollar', 'All questions'],
+  'Как оплатить по QR-коду?': ['QR-kod orqali qanday to‘lanadi?', 'How do I pay by QR code?'],
+  'Нажмите «QR оплата» на главной и наведите камеру на QR-код на кассе. Выберите срок рассрочки и подтвердите оплату.': ['Bosh sahifada «QR to‘lov»ni bosing va kamerani kassadagi QR-kodga qarating. Muddatni tanlang va to‘lovni tasdiqlang.', 'Tap “QR pay” on the home screen and point your camera at the QR code at the checkout. Choose a term and confirm the payment.'],
+  'Почему на разные сроки доступны разные суммы?': ['Nega turli muddatlarga turli summalar mavjud?', 'Why are different amounts available for different terms?'],
+  'Банк ограничивает размер ежемесячного платежа. На коротком сроке платёж выше, поэтому доступная сумма меньше.': ['Bank oylik to‘lov miqdorini cheklaydi. Qisqa muddatda to‘lov yuqoriroq, shuning uchun mavjud summa kamroq.', 'The bank caps the monthly payment. On a short term the payment is higher, so the available amount is smaller.'],
+  'Почему не прошла оплата картой?': ['Nega karta bilan to‘lov o‘tmadi?', 'Why didn’t my card payment go through?'],
+  'Картой hissa на кассе можно платить у партнёров Hissa и только на 3 месяца. Для других магазинов и сроков оплачивайте по QR-коду.': ['Hissa kartasi bilan kassada faqat Hissa hamkorlarida va faqat 3 oyga to‘lash mumkin. Boshqa do‘kon va muddatlar uchun QR-kod orqali to‘lang.', 'At the checkout, the hissa card works only at Hissa partners and only for 3 months. For other stores and terms, pay by QR code.'],
+  'Что будет, если не заплатить вовремя?': ['O‘z vaqtida to‘lamasam nima bo‘ladi?', 'What if I don’t pay on time?'],
+  'Мы заранее напомним о платеже. Штрафов и пеней нет, но просрочка передаётся в кредитное бюро и может снизить лимит.': ['To‘lov haqida oldindan eslatamiz. Jarima va penya yo‘q, lekin kechikish kredit byurosiga uzatiladi va limitni kamaytirishi mumkin.', 'We’ll remind you in advance. There are no fines or penalties, but late payments are reported to the credit bureau and may lower your limit.'],
+  'Сканировать QR-код': ['QR-kodni skanerlash', 'Scan QR code'],
+  'Персональные данные': ['Shaxsiy ma’lumotlar', 'Personal details'],
+  'Устройства': ['Qurilmalar', 'Devices'],
+  'Изменить код для входа': ['Kirish kodini o‘zgartirish', 'Change passcode'],
+  'Вход по биометрии': ['Biometrik kirish', 'Biometric login'],
+  'Тема и иконка приложения': ['Mavzu va ilova belgisi', 'Theme & app icon'],
+  'Язык': ['Til', 'Language'],
+  'О приложении': ['Ilova haqida', 'About the app'],
+  'Публичная оферта': ['Ommaviy oferta', 'Public offer'],
+  'Условия пользования': ['Foydalanish shartlari', 'Terms of use'],
+  'Выйти': ['Chiqish', 'Log out'],
+  'Наведите камеру на QR-код': ['Kamerani QR-kodga qarating', 'Point your camera at the QR code'],
+  'Рассрочку можно выбрать после сканирования': ['Muddatli to‘lovni skanerlashdan keyin tanlaysiz', 'You can choose installments after scanning'],
+  'Выбрать из фото': ['Rasmdan tanlash', 'Choose from photos'],
+  'Оплата': ['To‘lov', 'Payment'],
+  'Партнёр Hissa · 3 мес без переплаты': ['Hissa hamkori · 3 oy ortiqcha to‘lovsiz', 'Hissa partner · 3 months, no overpayment'],
+  'Сумма покупки': ['Xarid summasi', 'Purchase amount'],
+  'Оплатить в рассрочку': ['Muddatli to‘lash', 'Pay in installments'],
+  'Оплатить своими деньгами': ['O‘z mablag‘im bilan to‘lash', 'Pay with my own money'],
+  'Сменить': ['O‘zgartirish', 'Change'],
+  'Доступно при оплате в рассрочку': ['Muddatli to‘lovda mavjud', 'Available with installments'],
+  'Рассрочку предоставляет Ipoteka Bank': ['Muddatli to‘lovni Ipoteka Bank taqdim etadi', 'Installments provided by Ipoteka Bank'],
+  'Продолжая, вы соглашаетесь с': ['Davom etib, siz rozilik bildirasiz:', 'By continuing, you agree to the'],
+  'условиями рассрочки': ['muddatli to‘lov shartlari', 'installment terms'],
+  'и': ['va', 'and'],
+  'офертой Hissa': ['Hissa ofertasi', 'Hissa offer'],
+  'Ваши карты': ['Kartalaringiz', 'Your cards'],
+  'Оплачено в рассрочку': ['Muddatli to‘landi', 'Paid in installments'],
+  'Оплачено': ['To‘landi', 'Paid'],
+  'Рассрочка от Ipoteka Bank': ['Ipoteka Bank muddatli to‘lovi', 'Installments by Ipoteka Bank'],
+  'Баланс кешбэка': ['Keshbek balansi', 'Cashback balance'],
+  'Кешбэк за покупку': ['Xarid uchun keshbek', 'Cashback for this purchase'],
+  'Показать чек': ['Chekni ko‘rsatish', 'Show receipt'],
+  'Готово': ['Tayyor', 'Done'],
+  'Чек': ['Chek', 'Receipt'],
+  'Оплата по QR': ['QR orqali to‘lov', 'QR payment'],
+  'Итого': ['Jami', 'Total'],
+  'Статус': ['Holat', 'Status'],
+  'Успешно': ['Muvaffaqiyatli', 'Successful'],
+  'Магазин': ['Do‘kon', 'Store'],
+  'Продавец': ['Sotuvchi', 'Seller'],
+  'ООО «Korzinka»': ['«Korzinka» MChJ', 'Korzinka LLC'],
+  'Адрес': ['Manzil', 'Address'],
+  'г. Ташкент': ['Toshkent sh.', 'Tashkent'],
+  'ID операции': ['Operatsiya ID', 'Transaction ID'],
+  'Способ оплаты': ['To‘lov usuli', 'Payment method'],
+  'Рассрочка': ['Muddatli to‘lov', 'Installments'],
+  'Срок': ['Muddat', 'Term'],
+  'Кредитор': ['Kreditor', 'Lender'],
+  'Оплачено кешбэком': ['Keshbek bilan to‘landi', 'Paid with cashback'],
+  'В рассрочку': ['Muddatli to‘lovga', 'In installments'],
+  'Переплата': ['Ortiqcha to‘lov', 'Overpayment'],
+  'По вопросам возврата товара обращайтесь': ['Tovarni qaytarish bo‘yicha', 'For product returns, please contact'],
+  'в магазин': ['do‘konga murojaat qiling', 'the store'],
+  'Служба поддержки Hissa:': ['Hissa yordam xizmati:', 'Hissa support:'],
+  'Поделиться': ['Ulashish', 'Share'],
+  'График платежей': ['To‘lov jadvali', 'Payment schedule'],
+  'Спишем автоматически в день платежа': ['To‘lov kuni avtomatik yechiladi', 'Charged automatically on the due date'],
+  'Договор ›': ['Shartnoma ›', 'Contract ›'],
+  'Закрыть': ['Yopish', 'Close'],
+  'мес': ['oy', 'mo'],
+  'сум': ['so‘m', 'UZS'],
+  'РУС': ['РУС', 'РУС'],
+  'Назад': ['Orqaga', 'Back'], 'Поиск': ['Qidiruv', 'Search'], 'Скрыть баланс': ['Balansni yashirish', 'Hide balance'], 'Сообщения': ['Xabarlar', 'Messages'],
+  'Профиль': ['Profil', 'Profile'], 'Разделы': ['Bo‘limlar', 'Sections'], 'Сканировать QR': ['QR skanerlash', 'Scan QR'], 'Карта магазинов рядом': ['Yaqin do‘konlar xaritasi', 'Map of nearby stores'],
+  'Закрыть подсказку': ['Maslahatni yopish', 'Dismiss tip'], 'Фонарик': ['Chiroq', 'Flashlight'], 'Карта hissa': ['Hissa kartasi', 'Hissa card'],
+  'Выбрана': ['Tanlangan', 'Selected'], 'Списать кешбэк': ['Keshbekdan foydalanish', 'Use cashback']
+};
+const plEn = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const tok = s => s
+  .replace(/(\d{1,2}) (января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)/g, (m, d, mo) => { const i = MON_RU.indexOf(mo); return L(`${d}-${MON_UZ[i]}`, `${MON_EN[i]} ${d}`); })
+  .replace(/сум\/мес/g, L('so‘m/oy', 'UZS/mo'))
+  .replace(/(?<![А-Яа-яЁё])сум(?![А-Яа-яЁё])/g, L('so‘m', 'UZS'))
+  .replace(/кешбэка/g, L('keshbek', 'cashback'));
+const RULES = [
+  [/^(\d+) (?:платёж|платежа|платежей) • первый платёж (.+)$/, m => L(`${m[1]} ta to‘lov • birinchi to‘lov ${tok(m[2])}`, `${plEn(+m[1], 'payment')} • first payment ${tok(m[2])}`)],
+  [/^(\d+) (?:платёж|платежа|платежей) • переплата (.+)$/, m => L(`${m[1]} ta to‘lov • ortiqcha to‘lov ${tok(m[2])}`, `${plEn(+m[1], 'payment')} • overpayment ${tok(m[2])}`)],
+  [/^(\d+) (?:платёж|платежа|платежей) •$/, m => L(`${m[1]} ta to‘lov •`, `${plEn(+m[1], 'payment')} •`)],
+  [/^(\d+) из (\d+)(?: платеж\S*)?$/, m => L(`${m[1]}/${m[2]} to‘lov`, `${m[1]} of ${m[2]} payments`)],
+  [/^До платежа осталось (\d+) \S+$/, m => L(`To‘lovgacha ${m[1]} kun qoldi`, `${plEn(+m[1], 'day')} until payment`)],
+  [/^Рассрочка на (\d+) \S+$/, m => L(`${m[1]} oylik muddatli to‘lov`, `${m[1]}-month installment`)],
+  [/^на (\d+) месяц\S*$/, m => L(`${m[1]} oyga`, `for ${m[1]} months`)],
+  [/^(\d+) месяц\S*$/, m => L(`${m[1]} oy`, `${m[1]} months`)],
+  [/^(\d+) мес$/, m => L(`${m[1]} oy`, `${m[1]} mo`)],
+  [/^Оформить • (.+)$/, m => L(`Rasmiylashtirish • ${tok(m[1])}`, `Confirm • ${tok(m[1])}`)],
+  [/^Оплатить (.+)$/, m => L(`To‘lash ${tok(m[1])}`, `Pay ${tok(m[1])}`)],
+  [/^Переплата (.+)$/, m => L(`Ortiqcha to‘lov ${tok(m[1])}`, `Overpayment ${tok(m[1])}`)],
+  [/^Первый платёж (.+)$/, m => L(`Birinchi to‘lov ${tok(m[1])}`, `First payment ${tok(m[1])}`)],
+  [/^от (.+)$/, m => L(`${tok(m[1])} dan`, `from ${tok(m[1])}`)],
+  [/^кешбэк до (.+)$/, m => L(`${tok(m[1])} gacha keshbek`, `up to ${tok(m[1])} cashback`)],
+  [/^\+(.+) кешбэка$/, m => L(`+${tok(m[1])} keshbek`, `+${tok(m[1])} cashback`)],
+  [/^([\d,]+)% кешбэк$/, m => L(`${m[1]}% keshbek`, `${m[1].replace(',', '.')}% cashback`)],
+  [/^Списать кешбэк • (.+)$/, m => L(`Keshbekdan foydalanish • ${tok(m[1])}`, `Use cashback • ${tok(m[1])}`)],
+  [/^Ваш лимит (.+)$/, m => L(`Limitingiz ${tok(m[1])}`, `Your limit ${tok(m[1])}`)],
+  [/^Покупка на (.+?)\. Нажмите.*$/, m => L(`Xarid: ${tok(m[1])}. «QR to‘lov»ni bosing va muddatli to‘lang.`, `Purchase: ${tok(m[1])}. Tap “QR pay” and pay in installments.`)],
+  [/^Списано с (.+)$/, m => L(`${m[1]} kartasidan yechildi`, `Charged to ${m[1]}`)],
+  [/^до (\d+) мес без комиссии$/, m => L(`${m[1]} oygacha komissiyasiz`, `up to ${m[1]} mo, no fees`)],
+  [/^до (\d+) мес$/, m => L(`${m[1]} oygacha`, `up to ${m[1]} mo`)],
+  [/^(\d+) ?(м|км)$/, m => `${m[1]} ${m[2] === 'м' ? 'm' : 'km'}`],
+  [/^Посмотреть реквизиты карты (.+)$/, m => L(`Karta rekvizitlari ${m[1]}`, `Card details ${m[1]}`)],
+  [/^0-0-(\d+) в (\S+)( до конца года)?$/, m => L(`0-0-${m[1]} ${m[2]}’da${m[3] ? ' yil oxirigacha' : ''}`, `0-0-${m[1]} at ${m[2]}${m[3] ? ' till year end' : ''}`)]
+];
+function tr(s) {
+  if (LANG === 'ru' || !s || !/[А-Яа-яЁё]/.test(s)) return s;
+  const lead = s.match(/^\s*/)[0], trail = s.match(/\s*$/)[0], core = s.trim();
+  const d = DICT[core]; if (d) return lead + L(d[0], d[1]) + trail;
+  for (const [re, f] of RULES) { const m = core.match(re); if (m) return lead + f(m) + trail; }
+  return lead + tok(core) + trail;
+}
+function translateTree(root) {
+  if (LANG === 'ru' || !root) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); const nodes = []; let n;
+  while ((n = w.nextNode())) nodes.push(n);
+  nodes.forEach(t => { const v = tr(t.nodeValue); if (v !== t.nodeValue) t.nodeValue = v; });
+  root.querySelectorAll('[aria-label],[alt]').forEach(e => ['aria-label', 'alt'].forEach(a => { const v = e.getAttribute(a); if (v && /[А-Яа-яЁё]/.test(v)) e.setAttribute(a, tr(v)); }));
+}
+
 let toastT;
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+function toast(msg) { const t = $('#toast'); t.textContent = tr(msg); t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
 const SOON = 'Этот раздел пока в разработке';
 const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
 
@@ -796,6 +978,7 @@ render.scan = function () {
     const l = $('#sline'); if (l) l.remove();
     const f = $('#sframe'); if (f) f.classList.add('ok');
     $('#sfound').innerHTML = `<div class="scan-found"><img src="${A}korzinka.svg" alt="">Korzinka · ${fmt(PRICE)} сум</div>`;
+    translateTree($('#sfound'));
     buzz(30);
   }, 1700));
   scanTimers.push(setTimeout(() => { resetCheckout(); go('checkout'); }, 2500));
@@ -930,6 +1113,7 @@ function sheet(html) {
   closeSheet(true);
   const scrim = document.createElement('div'); scrim.className = 'scrim'; scrim.dataset.act = 'sheet-x';
   const sh = document.createElement('div'); sh.className = 'sheet'; sh.setAttribute('role','dialog'); sh.innerHTML = html;
+  translateTree(sh);
   const ph = $('#phone'); ph.appendChild(scrim); ph.appendChild(sh);
   requestAnimationFrame(() => { scrim.classList.add('show'); sh.classList.add('show'); });
 }
@@ -959,7 +1143,7 @@ document.addEventListener('click', e => {
   if (!t || !t.closest('#phone, .side, #present')) return;
   if (t.tagName === 'A') e.preventDefault();
   if (t.dataset.term) { e.stopPropagation(); co.term = +t.dataset.term; rr('checkout'); return; }
-  if (t.dataset.lang) { pfLang = t.dataset.lang; rr('profile'); return; }
+  if (t.dataset.lang) { pfLang = t.dataset.lang; LANG = { 'O’ZB': 'uz', 'РУС': 'ru', 'ENG': 'en' }[pfLang]; document.documentElement.lang = LANG; rr('profile'); return; }
   if (t.dataset.lterm) { lmTerm = +t.dataset.lterm; rr('limit'); return; }
   if (t.dataset.q) { const o = t.classList.toggle('open'); t.firstElementChild.setAttribute('aria-expanded', o); return; }
   if (t.dataset.card) { co.card = t.dataset.card; closeSheet(); rr('checkout'); return; }
