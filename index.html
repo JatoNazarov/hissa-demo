@@ -10,6 +10,21 @@
 <meta name="apple-mobile-web-app-title" content="Hissa">
 <meta name="description" content="Интерактивный прототип приложения Hissa: оплата по QR в рассрочку">
 <link rel="icon" href="assets/hissa-icon.svg" type="image/svg+xml">
+<script>
+window.__BUILD = '20261028115419';
+(function () {
+  // GitHub Pages caches pages for ~10 min. If a newer build exists, reload once with a cache-busting query.
+  try {
+    fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (v) {
+      if (!v || !v.build || v.build === window.__BUILD) return;
+      var u = new URL(location.href);
+      if (u.searchParams.get('v') === v.build) return;
+      u.searchParams.set('v', v.build);
+      location.replace(u.toString());
+    }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <title>Hissa</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
