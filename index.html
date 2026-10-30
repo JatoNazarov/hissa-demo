@@ -11,7 +11,7 @@
 <meta name="description" content="Интерактивный прототип приложения Hissa: оплата по QR в рассрочку">
 <link rel="icon" href="assets/hissa-icon.svg" type="image/svg+xml">
 <script>
-window.__BUILD = '20261028122544';
+window.__BUILD = '20261030110251';
 (function () {
   // GitHub Pages caches pages for ~10 min. If a newer build exists, reload once with a cache-busting query.
   try {
@@ -477,6 +477,194 @@ img{display:block;max-width:none}
 .pr-url input{font:inherit;font-size:14px;font-weight:500;color:var(--text2);padding:10px 12px;border-radius:12px;border:1px solid var(--sunken);background:#fff;width:100%}
 .pr-actions{display:flex;gap:8px;flex-wrap:wrap}
 .pr-x{position:absolute;right:max(20px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 20px)}
+
+/* ---------- STORES (Магазины · карта · карточка · филиалы) ---------- */
+.st-search{display:flex;align-items:center;gap:8px;margin-top:16px;padding:12px 16px;border-radius:20px;background:var(--surface);box-shadow:var(--shadow-md);cursor:text}
+.st-search>img{flex:none;width:24px;height:24px}
+.st-search input{flex:1;min-width:0;border:0;outline:0;background:none;padding:0;font:inherit;font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px;color:var(--text)}
+.st-search input::placeholder{color:var(--text3);opacity:1}
+.st-search .clr{flex:none;width:24px;height:24px;display:grid;place-items:center}
+.st-search .clr img{width:24px;height:24px;opacity:.6}
+.st-search input:placeholder-shown~.clr{display:none}
+.cats{display:flex;gap:24px;margin-top:24px;padding-inline:20px;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar,.mchips::-webkit-scrollbar{display:none}
+.cat{flex:none;min-width:64px;display:flex;flex-direction:column;align-items:center;gap:12px;font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text)}
+.cat .b{position:relative;width:64px;height:64px;border-radius:20px;background:var(--sunken);border:1px solid transparent;transition:background .2s,border-color .2s}
+.cat .b img{position:absolute;left:50%;top:50%;width:56px;height:56px;transform:translate(-50%,-50%)}
+.cat.on{color:var(--brand);font-weight:700}
+.cat.on .b{background:var(--brand-tint);border-color:var(--brand)}
+.geo{margin-top:24px;padding:16px;border-radius:24px;background:var(--surface);box-shadow:0 1px 1.5px rgba(12,17,29,.04),0 12px 8px rgba(12,17,29,.02);display:flex;flex-direction:column;gap:16px}
+.geo .h{display:flex;align-items:flex-start;gap:16px}
+.geo .h .t{flex:1;min-width:0;display:flex;align-items:flex-start;gap:8px}
+.geo .h .t>img{flex:none;width:28px;height:28px}
+.geo .h .t>span{display:flex;flex-direction:column;gap:4px;font-weight:600}
+.geo .h b{font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.geo .h small{font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text3)}
+.geo .x{flex:none;width:24px;height:24px}
+.geo .x img{width:24px;height:24px}
+.geo .ok{width:100%;padding:8px 16px;border-radius:999px;background:var(--brand-tint);color:var(--brand);font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;text-align:center}
+.st-head{display:flex;align-items:center;gap:16px;margin-top:24px}
+.st-head h2{flex:1;min-width:0;margin:0;font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.reg{flex:none;display:flex;align-items:center;gap:2px;padding:8px 16px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow-md);font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;white-space:nowrap}
+.reg img{width:20px;height:20px}
+.st-list{display:flex;flex-direction:column;gap:16px;margin-top:16px}
+.srw{display:flex;align-items:center;gap:12px;width:100%;text-align:left}
+.srw.off{opacity:.6}
+.slg{position:relative;flex:none;width:60px;height:60px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow-md);overflow:hidden;display:grid;place-items:center}
+.slg .ini,.sto-h .lg .ini{font-weight:800;font-size:22px;line-height:1;color:var(--text2)}
+.srw .in{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.srw .in b{font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.srw .in>span{font-weight:600;font-size:12px;line-height:16px;letter-spacing:-.24px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tags{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.tg{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--brand-tint);color:var(--brand);font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px;white-space:nowrap}
+.tg.w{background:rgba(245,158,11,.12);color:#f59e0b;font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px}
+.tg.w.l{font-size:14px;line-height:20px;letter-spacing:-.28px}
+.s-g{color:var(--success)} .s-w{color:#f59e0b}
+.st-empty{margin-top:16px;padding:24px 16px;border-radius:24px;background:var(--surface);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;font-weight:600;font-size:14px;line-height:20px;color:var(--text2);letter-spacing:-.28px}
+.st-empty .ok{padding:8px 16px;border-radius:999px;background:var(--brand-tint);color:var(--brand)}
+.st-foot{display:flex;justify-content:center;padding:16px 0 max(32px,calc(var(--sab) + 12px));pointer-events:none;background:linear-gradient(rgba(242,244,247,0) calc(100% - 32px),var(--bg))}
+.mpill{pointer-events:auto;display:flex;align-items:center;gap:8px;height:56px;padding:8px 16px 8px 8px;border-radius:999px;background:var(--surface);box-shadow:0 1px 1.5px rgba(12,17,29,.04),0 12px 8px rgba(12,17,29,.02),0 0 0 .5px rgba(12,17,29,.04);font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px;white-space:nowrap}
+.mpill .th{position:relative;flex:none;width:40px;height:40px;border-radius:999px;overflow:hidden}
+.mpill .th img{position:absolute;left:-177%;top:-149.09%;width:454%;height:436.79%;max-width:none}
+.mpill .ls{position:relative;flex:none;width:40px;height:40px;border-radius:999px;overflow:hidden;background:var(--bg)}
+.mpill .ls img{position:absolute;left:7px;width:26px;height:10px}
+.mpill .lb{display:flex;align-items:center;gap:2px}
+.mpill .lb img{width:24px;height:24px}
+/* region sheet */
+.rg-h{flex:none;display:flex;align-items:center;gap:16px;padding:20px}
+.rg-h b{flex:1;min-width:0;font-weight:700;font-size:20px;line-height:28px;letter-spacing:-.4px}
+.rg-h b i{font-style:normal;color:var(--text3)}
+.rg-h button{flex:none;width:32px;height:32px}
+.rg-h button img{width:32px;height:32px}
+.rg-list{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px 20px 12px;display:flex;flex-direction:column;gap:20px}
+.rg{display:flex;align-items:center;gap:16px;width:100%;text-align:left}
+.rg .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;font-weight:600}
+.rg .t b{font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.rg .t b i{font-style:normal;color:var(--text3);margin-left:8px}
+.rg .t small{font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text3)}
+.rg .c{flex:none;width:32px;height:32px;display:grid;place-items:center}
+.rg .c img{width:24px;height:24px}
+/* map */
+#storesMap{background:#eef0ec;overflow:hidden}
+.mcv{position:absolute;left:0;top:0;width:402px;height:874px;transform-origin:0 0;pointer-events:none}
+.mcv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mlayer{position:absolute;inset:0}
+.pin{position:absolute;display:flex;align-items:center;isolation:isolate;transition:transform .15s}
+.pin:active{transform:scale(.96)}
+.pin .ic{position:relative;z-index:2;margin-right:-4px;padding:8px;border-radius:999px;background:var(--brand);border:2px solid #f2f4f7;display:flex}
+.pin .ic img{width:16px;height:16px}
+.pin .nm{position:relative;z-index:1;display:flex;align-items:center;gap:6px;padding:6px 6px 6px 12px;border-radius:999px;background:var(--brand);border:2px solid #f2f4f7;color:#fff;font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;white-space:nowrap}
+.pin .nm i{font-style:normal;padding:4px 6px;border-radius:999px;background:#fff;color:var(--brand);font-weight:700;font-size:12px;line-height:12px;letter-spacing:-.24px}
+.mk{position:absolute;width:48px;height:60px;filter:drop-shadow(0 8px 12px rgba(255,101,91,.24));animation:mkdrop .35s cubic-bezier(.3,1.4,.5,1) both;transform-origin:50% 100%}
+.mk img{position:absolute;left:-2px;top:-2px;width:52px;height:62px;max-width:none}
+.mk img.h{left:8px;top:16px;width:32.01px;height:17px}
+@keyframes mkdrop{from{transform:translateY(-12px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.me{position:absolute;width:24px;height:24px;pointer-events:none}
+.me img{position:absolute;left:-4px;top:-9.27px;width:32px;height:37.27px;max-width:none}
+.msend{position:absolute;right:20px;top:50%;margin-top:-24px;width:48px;height:48px;padding:8px;border-radius:16px;background:#fff;box-shadow:0 1px 1.5px rgba(12,17,29,.04),0 12px 8px rgba(12,17,29,.02)}
+.msend img{width:32px;height:32px}
+.mfade{position:absolute;left:0;right:0;top:0;height:calc(var(--sat) + 114px);background:linear-gradient(var(--bg) 45%,rgba(242,244,247,0));pointer-events:none}
+.toolbar.mtb{position:absolute;left:0;right:0;background:none}
+.mchips{position:absolute;left:0;right:0;top:calc(var(--sat) + 70px);display:flex;gap:8px;padding-inline:20px;overflow-x:auto;scrollbar-width:none;z-index:21}
+.mchip{flex:none;display:flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow-md);font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2);white-space:nowrap;transition:background .2s,color .2s}
+.mchip img{width:20px;height:20px}
+.mchip.on{background:#667085;color:#fff}
+.mchip.on img{filter:brightness(0) invert(1)}
+.mbot{position:absolute;left:0;right:0;bottom:max(32px,calc(var(--sab) + 12px));display:flex;justify-content:center;pointer-events:none}
+.msheet{position:absolute;left:0;right:0;bottom:0;z-index:22;background:var(--surface);border-radius:32px 32px 0 0;box-shadow:0 -4px 16px rgba(12,17,29,.04);padding:20px 20px max(32px,calc(var(--sab) + 12px));display:flex;flex-direction:column;gap:20px;animation:mup .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes mup{from{transform:translateY(100%)}to{transform:none}}
+.msheet .hd{display:flex;align-items:flex-start;gap:16px}
+.msheet .hd .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.msheet .nmr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.msheet .nmr b{font-weight:700;font-size:20px;line-height:28px;letter-spacing:-.4px}
+.msheet .sub{font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.msheet .x{flex:none;width:32px;height:32px}
+.msheet .x img{width:32px;height:32px}
+.mbxs{display:flex;gap:8px}
+.mbx{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:16px;background:var(--bg);font-weight:600}
+.mbx.f{flex:1;min-width:0}
+.mbx small{font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text3)}
+.mbx span{font-size:16px;line-height:24px;letter-spacing:-.32px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.macts{display:flex;gap:8px}
+.btn2{flex:1;min-width:0;padding:16px;border-radius:999px;font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px;text-align:center}
+.btn2.soft{background:var(--brand-tint);color:var(--brand)}
+.btn2.pri{background:var(--brand);color:#fff}
+/* store card */
+.sto{display:flex;flex-direction:column;gap:16px;padding-top:16px;padding-bottom:16px}
+.sto-h{display:flex;align-items:center;gap:16px;min-height:64px}
+.sto-h .lg{position:relative;flex:none;width:64px;height:64px;border-radius:24px;background:var(--surface);overflow:hidden;display:grid;place-items:center}
+.sto-h .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.sto-h h1{margin:0;font-weight:700;font-size:24px;line-height:32px;letter-spacing:-.48px}
+.sto-h .stat{align-self:flex-start;font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2);text-align:left}
+.scard{display:flex;flex-direction:column;gap:16px;padding:16px;border-radius:24px;background:var(--surface);box-shadow:0 1px 1.5px rgba(12,17,29,.04),0 12px 8px rgba(12,17,29,.02)}
+.scard.ct{gap:4px}
+.scard h3{margin:0;font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.trow{display:flex;align-items:center;gap:8px}
+.trow>b{flex:none;width:60px;font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px}
+.trow .i{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.trow .v{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.trow .v>span:first-child{font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.trow small{font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text2)}
+.bnk{display:flex;align-items:center;gap:8px;font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text3)}
+.bnk img{width:16px;height:16px}
+.samt{display:flex;align-items:flex-end;gap:16px;padding:12px 16px;border-radius:16px;background:var(--bg);cursor:text;transition:box-shadow .2s}
+.samt:focus-within{box-shadow:inset 0 0 0 1.5px var(--brand)}
+.samt .f{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.samt small{font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text2)}
+.samt input{width:100%;border:0;outline:0;background:none;padding:0;font:inherit;font-weight:700;font-size:18px;line-height:24px;letter-spacing:-.36px;color:var(--text);font-variant-numeric:tabular-nums}
+.samt>span{font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.lst{display:flex;align-items:center;gap:12px}
+.hcard{position:relative;flex:none;width:56px;height:40px;border-radius:12px;background:#ff655b;overflow:hidden}
+.hcard .el{position:absolute;left:-12.93px;top:-12.93px;width:31.39px;height:31.39px;max-width:none}
+.hcard .ic{position:absolute;left:6px;top:6px;width:21px;height:12px}
+.hcard span{position:absolute;left:6px;top:22px;font-weight:700;font-size:10px;line-height:12px;letter-spacing:-.2px;color:#fff}
+.lst .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;font-weight:600}
+.lst .t b{font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--success)}
+.lst .t b.w{color:#f59e0b}
+.lst .t small{font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text2)}
+.mrows{display:flex;flex-direction:column;gap:12px}
+.mr{display:flex;align-items:center;gap:16px;width:calc(100% + 24px);margin:-6px -12px;padding:6px 12px;border-radius:14px;text-align:left;transition:background .2s}
+.mr.on{background:var(--brand-tint)}
+.mr .c{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.mr .c b{font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px}
+.mr .c small{font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text3)}
+.mr>span{font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px;white-space:nowrap}
+.mr.on>span,.mr.on .c b{color:var(--brand)}
+.pmr{display:flex;align-items:center;gap:12px}
+.pmr .im{position:relative;flex:none;width:48px;height:48px;border-radius:16px;background:var(--bg);overflow:hidden}
+.pmr .im img{position:absolute;inset:0;width:48px;height:48px;object-fit:cover}
+.pmr .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-weight:600}
+.pmr .t b{font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.pmr .t span{font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.bh{display:flex;align-items:center;gap:16px}
+.bh h3{flex:1}
+.bh button{flex:none;display:flex;align-items:center;gap:2px;color:var(--brand);font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px}
+.bh button img{width:20px;height:20px}
+.baddr{display:flex;flex-direction:column;gap:4px}
+.baddr b{font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.baddr span{font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.obtns{display:flex;gap:16px}
+.obtn{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;border-radius:999px;border:1px solid var(--border);font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;white-space:nowrap}
+.obtn img{width:20px;height:20px}
+.lnk{display:flex;align-items:center;gap:12px;width:100%;height:44px;text-align:left;font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px}
+.lnk img{flex:none;width:24px;height:24px}
+.lnk span{flex:1;min-width:0}
+.st-cta{display:flex;flex-direction:column;gap:16px;padding:16px 20px max(32px,calc(var(--sab) + 12px));background:linear-gradient(rgba(242,244,247,0),var(--bg) 16px)}
+.st-cta.closed{background:var(--surface);border-radius:24px 24px 0 0;box-shadow:0 -4px 8px rgba(12,17,29,.04)}
+.st-cta p{margin:0;text-align:center;font-weight:600;font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2)}
+.st-cta .cta{display:flex;align-items:center;justify-content:center;gap:8px;height:56px}
+.st-cta .cta img{width:24px;height:24px}
+/* branches */
+.br-list{margin-top:16px;padding:4px 16px;border-radius:24px;background:var(--surface);box-shadow:var(--shadow-md)}
+.brw{display:flex;align-items:center;gap:12px;width:100%;padding:12px 0;text-align:left;border-top:1px solid var(--sunken)}
+.brw:first-child{border-top:0}
+.brw.off{opacity:.6}
+.brw .ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--bg);display:grid;place-items:center}
+.brw .ic img{width:24px;height:24px}
+.brw .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-weight:600;white-space:nowrap}
+.brw .t b{font-weight:600;font-size:16px;line-height:24px;letter-spacing:-.32px;overflow:hidden;text-overflow:ellipsis}
+.brw .t>span{font-size:14px;line-height:20px;letter-spacing:-.28px;color:var(--text2);overflow:hidden;text-overflow:ellipsis}
+.brw>img{flex:none;width:24px;height:24px}
 </style>
 
 <div class="stage">
@@ -550,12 +738,12 @@ function calc(term, useCash) {
 const root = $('#screens');
 const screens = {};
 function mk(id) { const el = document.createElement('section'); el.className = 'screen'; el.id = id; el.dataset.pos = 'right'; root.appendChild(el); screens[id] = el; return el; }
-['home','limit','profile','scan','checkout','success','receipt'].forEach(mk);
+['home','limit','profile','scan','checkout','success','receipt','stores','storesMap','store','branches'].forEach(mk);
 let current = null;
 function go(id, dir = 'forward', instant = false) {
   const next = screens[id], prev = current && screens[current];
   if (next === prev) return;
-  rr(id, false);
+  rr(id, dir === 'back');
   next.classList.toggle('noanim', instant);
   if (dir === 'forward') { next.classList.add('noanim'); next.dataset.pos = 'right'; next.offsetWidth; next.classList.toggle('noanim', instant); }
   else { next.classList.add('noanim'); next.dataset.pos = 'left'; next.offsetWidth; next.classList.toggle('noanim', instant); }
@@ -575,7 +763,7 @@ function postRender(el) {
   translateTree(el);
   const sc = el.querySelector('.sc-in'); if (!sc) return;
   el.classList.add('has-sc');
-  const dock = sc.querySelector(':scope > .dock, :scope > .bottom-btns, :scope > .lm-foot, :scope > .hdock');
+  const dock = sc.querySelector(':scope > .dock, :scope > .bottom-btns, :scope > .lm-foot, :scope > .hdock, :scope > .st-foot, :scope > .st-cta');
   if (dock) {
     dock.classList.add('floating'); el.appendChild(dock);
     const pad = () => { if (!dock.classList.contains('hdock')) sc.style.paddingBottom = dock.offsetHeight + 'px'; };
@@ -718,7 +906,24 @@ const DICT = {
   'Назад': ['Orqaga', 'Back'], 'Поиск': ['Qidiruv', 'Search'], 'Скрыть баланс': ['Balansni yashirish', 'Hide balance'], 'Сообщения': ['Xabarlar', 'Messages'],
   'Профиль': ['Profil', 'Profile'], 'Разделы': ['Bo‘limlar', 'Sections'], 'Сканировать QR': ['QR skanerlash', 'Scan QR'], 'Карта магазинов рядом': ['Yaqin do‘konlar xaritasi', 'Map of nearby stores'],
   'Закрыть подсказку': ['Maslahatni yopish', 'Dismiss tip'], 'Фонарик': ['Chiroq', 'Flashlight'], 'Карта hissa': ['Hissa kartasi', 'Hissa card'],
-  'Выбрана': ['Tanlangan', 'Selected'], 'Списать кешбэк': ['Keshbekdan foydalanish', 'Use cashback']
+  'Выбрана': ['Tanlangan', 'Selected'], 'Списать кешбэк': ['Keshbekdan foydalanish', 'Use cashback'],
+  'Магазины': ['Do‘konlar', 'Stores'], 'Магазины на карте': ['Xaritadagi do‘konlar', 'Stores on map'], 'Магазины списком': ['Ro‘yxat ko‘rinishida', 'Stores as list'],
+  'Магазин или акция': ['Do‘kon yoki aksiya', 'Store or promo'], 'Улица или торговый центр': ['Ko‘cha yoki savdo markazi', 'Street or mall'], 'Очистить': ['Tozalash', 'Clear'], 'Категории': ['Toifalar', 'Categories'],
+  'Все': ['Barchasi', 'All'], 'Техника': ['Texnika', 'Electronics'], 'Кафе': ['Kafe', 'Cafés'], 'Аптеки': ['Dorixonalar', 'Pharmacies'], 'Одежда': ['Kiyim', 'Clothing'],
+  'Покажем ближайшие магазины': ['Eng yaqin do‘konlarni ko‘rsatamiz', 'We’ll show the nearest stores'], 'Покажем ближайшие филиалы': ['Eng yaqin filiallarni ko‘rsatamiz', 'We’ll show the nearest branches'],
+  'Разрешите доступ к геолокации': ['Geolokatsiyaga ruxsat bering', 'Allow location access'], 'Разрешить': ['Ruxsat berish', 'Allow'], 'Скрыть': ['Yashirish', 'Hide'], 'Показываем ближайшие': ['Eng yaqinlarini ko‘rsatyapmiz', 'Showing the nearest'],
+  'Ничего не нашлось': ['Hech narsa topilmadi', 'Nothing found'], 'В демо доступны только магазины Ташкента': ['Demoda faqat Toshkent do‘konlari bor', 'The demo only has stores in Tashkent'], 'Показать Ташкент': ['Toshkentni ko‘rsatish', 'Show Tashkent'],
+  'Регион': ['Hudud', 'Region'], 'Вы находитесь здесь': ['Siz shu yerdasiz', 'You are here'], 'Выбран': ['Tanlangan', 'Selected'],
+  'г. Ташкент': ['Toshkent sh.', 'Tashkent'], 'Ташкентская область': ['Toshkent viloyati', 'Tashkent Region'], 'Андижанская область': ['Andijon viloyati', 'Andijan Region'], 'Бухарская область': ['Buxoro viloyati', 'Bukhara Region'],
+  'Джизакская область': ['Jizzax viloyati', 'Jizzakh Region'], 'Кашкадарьинская область': ['Qashqadaryo viloyati', 'Kashkadarya Region'], 'Навоийская область': ['Navoiy viloyati', 'Navoi Region'], 'Наманганская область': ['Namangan viloyati', 'Namangan Region'],
+  'Самаркандская область': ['Samarqand viloyati', 'Samarkand Region'], 'Сурхандарьинская область': ['Surxondaryo viloyati', 'Surkhandarya Region'], 'Сырдарьинская область': ['Sirdaryo viloyati', 'Syrdarya Region'], 'Ферганская область': ['Farg‘ona viloyati', 'Fergana Region'],
+  'Хорезмская область': ['Xorazm viloyati', 'Khorezm Region'], 'Республика Каракалпакстан': ['Qoraqalpog‘iston Respublikasi', 'Republic of Karakalpakstan'],
+  'Адрес': ['Manzil', 'Address'], 'Пешком': ['Piyoda', 'Walk'], 'Маршрут': ['Yo‘nalish', 'Route'], 'О магазине': ['Do‘kon haqida', 'About store'], 'Моё местоположение': ['Mening joylashuvim', 'My location'],
+  'Условия рассрочки': ['Muddatli to‘lov shartlari', 'Installment terms'], 'Платёж в месяц': ['Oylik to‘lov', 'Monthly payment'], 'Хватает лимита': ['Limit yetarli', 'Enough limit'],
+  'Как оплатить': ['Qanday to‘lash mumkin', 'How to pay'], 'Картой на кассе': ['Kassada karta bilan', 'By card at checkout'], '3 мес без переплаты': ['3 oy ortiqcha to‘lovsiz', '3 mo, no overpayment'],
+  'По QR в Hissa': ['Hissa’da QR orqali', 'By QR in Hissa'], 'Все сроки и акции': ['Barcha muddatlar va aksiyalar', 'All terms and promos'],
+  'Ближайший филиал': ['Eng yaqin filial', 'Nearest branch'], 'Выбранный филиал': ['Tanlangan filial', 'Selected branch'], 'Позвонить': ['Qo‘ng‘iroq qilish', 'Call'], 'Контакты': ['Kontaktlar', 'Contacts'],
+  'Оплатить по QR': ['QR orqali to‘lash', 'Pay by QR'], 'Демо: переключить открыто/закрыто': ['Demo: ochiq/yopiq', 'Demo: toggle open/closed']
 };
 const plEn = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
 const tok = s => s
@@ -752,6 +957,29 @@ const RULES = [
   [/^до (\d+) мес$/, m => L(`${m[1]} oygacha`, `up to ${m[1]} mo`)],
   [/^(\d+) ?(м|км)$/, m => `${m[1]} ${m[2] === 'м' ? 'm' : 'km'}`],
   [/^Посмотреть реквизиты карты (.+)$/, m => L(`Karta rekvizitlari ${m[1]}`, `Card details ${m[1]}`)],
+  [/^(\d+) (?:магазин|магазина|магазинов)$/, m => L(`${m[1]} ta do‘kon`, plEn(+m[1], 'store'))],
+  [/^(\d+) (?:филиал|филиала|филиалов)$/, m => L(`${m[1]} ta filial`, `${m[1]} ${+m[1] === 1 ? 'branch' : 'branches'}`)],
+  [/^Филиалы (.+)$/, m => L(`${m[1]} filiallari`, `${m[1]} branches`)],
+  [/^открыто до (.+)$/, m => L(`${m[1]} gacha ochiq`, `open until ${m[1]}`)],
+  [/^Открыто до (.+)$/, m => L(`${m[1]} gacha ochiq`, `Open until ${m[1]}`)],
+  [/^закроется в (.+)$/, m => L(`${m[1]} da yopiladi`, `closes at ${m[1]}`)],
+  [/^Закроется в (.+)$/, m => L(`${m[1]} da yopiladi`, `Closes at ${m[1]}`)],
+  [/^закрыто до (.+)$/, m => L(`${m[1]} gacha yopiq`, `closed until ${m[1]}`)],
+  [/^Закрыто до (.+)$/, m => L(`${m[1]} gacha yopiq`, `Closed until ${m[1]}`)],
+  [/^Магазин закрыт до (.+)$/, m => L(`Do‘kon ${m[1]} gacha yopiq`, `The store is closed until ${m[1]}`)],
+  [/^итого (.+)$/, m => L(`jami ${tok(m[1])}`, `total ${tok(m[1])}`)],
+  [/^переплата (.+)$/, m => L(`ortiqcha to‘lov ${tok(m[1])}`, `overpayment ${tok(m[1])}`)],
+  [/^Доступно (.+)$/, m => L(`Mavjud: ${tok(m[1])}`, `Available ${tok(m[1])}`)],
+  [/^Не хватает (.+)$/, m => L(`${tok(m[1])} yetmaydi`, `Short by ${tok(m[1])}`)],
+  [/^кэшбэк ([\d,]+%)$/, m => L(`keshbek ${m[1]}`, `cashback ${m[1].replace(',', '.')}`)],
+  [/^после акции переплата (\d+)% • кэшбэк ([\d,]+%)$/, m => L(`aksiyadan keyin ortiqcha to‘lov ${m[1]}% • keshbek ${m[2]}`, `after promo: overpayment ${m[1]}% • cashback ${m[2].replace(',', '.')}`)],
+  [/^акция • ещё (\d+) \S+$/, m => L(`aksiya • yana ${m[1]} kun`, `promo • ${plEn(+m[1], 'day')} left`)],
+  [/^ещё (\d+) \S+$/, m => L(`yana ${m[1]} kun`, `${plEn(+m[1], 'day')} left`)],
+  [/^Все • (\d+)$/, m => L(`Barchasi • ${m[1]}`, `All • ${m[1]}`)],
+  [/^(\d+) мин пешком$/, m => L(`piyoda ${m[1]} daqiqa`, `${m[1]} min walk`)],
+  [/^ежедневно (.+)$/, m => L(`har kuni ${m[1]}`, `daily ${m[1]}`)],
+  [/^([\d,]+) ?(м|км)$/, m => `${L(m[1], m[1].replace(',', '.'))} ${m[2] === 'м' ? 'm' : 'km'}`],
+  [/^Регион$/, () => L('Hudud', 'Region')],
   [/^0-0-(\d+) в (\S+)( до конца года)?$/, m => L(`0-0-${m[1]} ${m[2]}’da${m[3] ? ' yil oxirigacha' : ''}`, `0-0-${m[1]} at ${m[2]}${m[3] ? ' till year end' : ''}`)]
 ];
 function tr(s) {
@@ -854,21 +1082,21 @@ render.home = function () {
   <div class="col sec-t"><h2>Текущие рассрочки</h2><button class="pill-btn" data-act="soon">Все рассрочки</button></div>
   <div class="cards" id="cards">${newCards}${STATIC_CARDS.map(c => icardHTML(c)).join('')}</div>
   <div class="col">
-    <div class="sec-t"><h2>Магазины рядом</h2><button class="pill-btn" data-act="soon">Все магазины</button></div>
+    <div class="sec-t"><h2>Магазины рядом</h2><button class="pill-btn" data-act="stores">Все магазины</button></div>
     <div class="stores">
-      <button class="store" data-act="soon"><span class="lg"><span style="position:relative;width:41px;height:9px;display:block"><img src="${A}bosch-symbol.svg" style="position:absolute;left:0;top:0;width:22%;height:100%" alt=""><img src="${A}bosch-logotype.svg" style="position:absolute;left:33.35%;top:15%;width:66.65%;height:69%" alt="Bosch"></span></span><span class="in"><b>Bosch</b><span class="g">до 6 мес без комиссии</span></span><span class="dist">70 м</span></button>
-      <button class="store" data-act="soon"><span class="lg"><img src="${A}store-castore.webp" width="52" height="52" alt="CA.store"></span><span class="in"><b>CA.Store</b><span>до 12 мес</span></span><span class="dist">90 м</span></button>
-      <button class="store" data-act="soon"><span class="lg"><span class="slogo" style="position:static"><img src="${A}store-lg.svg" width="40" height="40" alt="LG"></span></span><span class="in"><b>LG Electronics</b><span>до 12 мес</span></span><span class="dist">400м</span></button>
-      <button class="store" data-act="soon"><span class="lg"><img src="${A}store-macbro.webp" style="position:absolute;left:50%;top:calc(50% + 4px);width:82px;height:70px;transform:translate(-50%,-50%)" alt="MacBro"></span><span class="in"><b>MacBro</b><span class="g">до 6 мес без комиссии</span></span><span class="dist">1 км</span></button>
+      <button class="store" data-act="store" data-store="bosch"><span class="lg"><span style="position:relative;width:41px;height:9px;display:block"><img src="${A}bosch-symbol.svg" style="position:absolute;left:0;top:0;width:22%;height:100%" alt=""><img src="${A}bosch-logotype.svg" style="position:absolute;left:33.35%;top:15%;width:66.65%;height:69%" alt="Bosch"></span></span><span class="in"><b>Bosch</b><span class="g">до 6 мес без комиссии</span></span><span class="dist">70 м</span></button>
+      <button class="store" data-act="store" data-store="castore"><span class="lg"><img src="${A}store-castore.webp" width="52" height="52" alt="CA.store"></span><span class="in"><b>CA.Store</b><span>до 12 мес</span></span><span class="dist">90 м</span></button>
+      <button class="store" data-act="store" data-store="lg"><span class="lg"><span class="slogo" style="position:static"><img src="${A}store-lg.svg" width="40" height="40" alt="LG"></span></span><span class="in"><b>LG Electronics</b><span>до 12 мес</span></span><span class="dist">400м</span></button>
+      <button class="store" data-act="store" data-store="macbro"><span class="lg"><img src="${A}store-macbro.webp" style="position:absolute;left:50%;top:calc(50% + 4px);width:82px;height:70px;transform:translate(-50%,-50%)" alt="MacBro"></span><span class="in"><b>MacBro</b><span class="g">до 6 мес без комиссии</span></span><span class="dist">1 км</span></button>
     </div>
-    <button class="map" data-act="soon"><img src="${A}map.jpg" alt="Карта магазинов рядом" loading="lazy"><span>Посмотреть на карте</span></button>
+    <button class="map" data-act="storesMap"><img src="${A}map.jpg" alt="Карта магазинов рядом" loading="lazy"><span>Посмотреть на карте</span></button>
   </div>
   <div class="spacer"></div>
   <div class="hdock"><div class="tabfade"></div>
     <nav class="tabbar" aria-label="Разделы">
       <button class="tab on"><img class="ti" src="${A}tab-overview.svg" alt="">Обзор</button>
       <button class="tab" data-act="soon"><img class="ti" src="${A}tab-transfers.svg" alt="">Переводы</button>
-      <button class="tab" data-act="soon"><img class="ti" src="${A}tab-bag.svg" alt="">Предложения</button>
+      <button class="tab" data-act="stores"><img class="ti" src="${A}tab-bag.svg" alt="">Предложения</button>
       <button class="tab" data-act="soon"><span class="hd"><img src="${A}e119.svg" style="left:0" alt=""><img src="${A}e115.svg" style="left:10px" alt=""><img src="${A}e114.svg" style="left:20px" alt=""></span>Hissa</button>
     </nav>
     ${S.coachDone ? '' : `<div class="coach" role="note">
@@ -919,7 +1147,7 @@ render.limit = function () {
           <div class="lnums"><div><small>Осталось</small><span class="tnum">${fmt(S.limit)} сум</span></div><div><small>Потрачено</small><span class="tnum">${fmt(spent)} сум</span></div></div>
         </div>
       </div>
-      <button class="row-link" data-act="soon"><img src="${A}shop.svg" width="32" height="32" alt=""><span class="t"><b>Магазины-партнёры</b><span>Где купить с меньшей переплатой</span></span><img src="${A}chev-coral.svg" width="24" height="24" alt=""></button>
+      <button class="row-link" data-act="stores"><img src="${A}shop.svg" width="32" height="32" alt=""><span class="t"><b>Магазины-партнёры</b><span>Где купить с меньшей переплатой</span></span><img src="${A}chev-coral.svg" width="24" height="24" alt=""></button>
       <div class="duo"><div data-act="soon" role="button" tabindex="0"><span class="tp"><img src="${A}file.svg" width="32" height="32" alt=""><img src="${A}chev-coral.svg" width="24" height="24" alt=""></span>Договор<br>и условия</div>
         <div data-act="soon" role="button" tabindex="0"><span class="tp"><img src="${A}phone.svg" width="32" height="32" alt=""><img src="${A}chev-coral.svg" width="24" height="24" alt=""></span>Позвонить<br>в поддержку</div></div>
       <div class="box">
@@ -1128,6 +1356,264 @@ render.receipt = function () {
     <div class="bottom-btns"><button class="cta" data-act="share">Поделиться</button></div></div>`;
 };
 
+
+/* ---------- STORES: data ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const CATS = [
+  { id: 'all', n: 'Все', img: 'cat-all.webp', chip: 'ch-all-dark.svg', chipOn: 'ch-all.svg', cnt: 312 },
+  { id: 'tech', n: 'Техника', img: 'cat-tech.webp', chip: 'ch-bag.svg', pin: 'mp-bag.svg', cnt: 86 },
+  { id: 'cafe', n: 'Кафе', img: 'cat-cafe.webp', chip: 'ch-food.svg', pin: 'mp-food.svg', cnt: 64 },
+  { id: 'pharm', n: 'Аптеки', img: 'cat-pharm.webp', chip: 'ch-plus.svg', pin: 'mp-plus.svg', cnt: 41 },
+  { id: 'cloth', n: 'Одежда', img: 'cat-cloth.webp', chip: 'ch-cloth.svg', cnt: 58 }
+];
+const MAP_CATS = ['all', 'tech', 'pharm', 'cafe', 'cloth'];
+const catOf = id => CATS.find(c => c.id === id);
+const REGIONS = [['tash','г. Ташкент',312],['tashr','Ташкентская область',64],['and','Андижанская область',27],['bux','Бухарская область',31],['jiz','Джизакская область',9],['qash','Кашкадарьинская область',12],['nav','Навоийская область',18],['nam','Наманганская область',24],['sam','Самаркандская область',48],['sur','Сурхандарьинская область',11],['sir','Сырдарьинская область',6],['fer','Ферганская область',29],['xor','Хорезмская область',15],['kk','Республика Каракалпакстан',38]];
+/* max — longest term without overpayment (0-0-N), promo — days left of a co-funded campaign, h — opening hours, x/y — pin on the 402×874 map */
+const STORES = [
+  { id: 'bosch', n: 'Bosch', cat: 'tech', max: 3, d: 20, addr: 'ул. Имама ат-Термези, 31', h: [9, 22] },
+  { id: 'castore', n: 'CA.Store', cat: 'tech', max: 6, promo: 3, d: 110, addr: 'ул. Имама ат-Термези, 31', h: [10, 23] },
+  { id: 'lg', n: 'LG Electronics', cat: 'tech', max: 12, d: 230, addr: 'ул. Имама ат-Термези, 31', h: [10, 21] },
+  { id: 'macbro', n: 'MacBro', cat: 'tech', max: 3, d: 570, addr: 'просп. Амира Темура, 24', h: [10, 23] },
+  { id: 'texnomart', n: 'Texnomart', cat: 'tech', max: 6, promo: 3, d: 900, addr: 'ул. Шота Руставели, 41', h: [8, 23], x: 271, y: 307 },
+  { id: 'citypharm', n: 'City Pharm', cat: 'pharm', max: 12, d: 350, addr: 'просп. Амира Темура, 15', h: [8, 23], x: 9, y: 353 },
+  { id: 'basilic', n: 'Basilic', cat: 'cafe', max: 12, d: 420, addr: 'ул. Шахрисабз, 5', h: [9, 23], x: 135, y: 598 },
+  { id: 'oxymed', n: 'OXYmed', cat: 'pharm', max: 3, d: 640, addr: 'ул. Истиклол, 30', h: [8, 22], x: 146, y: 116 },
+  { id: 'efendi', n: 'Efendi', cat: 'cafe', max: 6, d: 780, addr: 'ул. Мирабад, 12', h: [10, 23], x: 14, y: 692 },
+  { id: 'mediapark', n: 'Mediapark', cat: 'tech', max: 6, d: 1200, addr: 'ул. Мукими, 166', h: [10, 22], x: 277, y: 714 },
+  { id: 'lcw', n: 'LC Waikiki', cat: 'cloth', max: 3, d: 1500, addr: 'ТРЦ Next', h: [10, 22] }
+];
+const TEXNOMART_BRANCHES = [
+  { a: 'ул. Шота Руставели, 41', d: 900, h: [8, 23] },
+  { a: 'ТЦ Samarqand Darvoza', d: 2100, h: [10, 22], max: 6 },
+  { a: 'ТРЦ Next', d: 3400, h: [10, 22] },
+  { a: 'Mega Planet', d: 4800, h: [10, 22], max: 12 },
+  { a: 'ул. Мукими, 166', d: 5600, h: [9, 23] },
+  { a: 'Чиланзар, 9-й квартал', d: 7200, h: [9, 21] },
+  { a: 'ТРЦ Compass', d: 8100, h: [10, 22] },
+  { a: 'ТЦ Riviera', d: 8900, h: [10, 22] },
+  { a: 'Юнусабад, 4-й квартал', d: 9400, h: [9, 21] },
+  { a: 'ул. Бабура, 77', d: 10300, h: [9, 21] },
+  { a: 'Сергели, ул. Янги Сергели, 1', d: 13600, h: [9, 21] },
+  { a: 'ул. Фаробий, 3', d: 15200, h: [10, 20] }
+];
+const branchesOf = s => s.id === 'texnomart' ? TEXNOMART_BRANCHES : [{ a: s.addr, d: s.d, h: s.h }];
+const LOGO = {
+  bosch: `<span style="position:relative;width:41px;height:9px;display:block"><img src="${A}bosch-symbol.svg" style="position:absolute;left:0;top:0;width:22%;height:100%" alt=""><img src="${A}bosch-logotype.svg" style="position:absolute;left:33.35%;top:15%;width:66.65%;height:69%" alt=""></span>`,
+  castore: `<img src="${A}store-castore.webp" width="52" height="52" alt="">`,
+  lg: `<img src="${A}store-lg.svg" width="40" height="40" alt="">`,
+  macbro: `<img src="${A}store-macbro.webp" style="position:absolute;left:50%;top:calc(50% + 4px);width:82px;height:70px;transform:translate(-50%,-50%);max-width:none" alt="">`,
+  texnomart: `<img src="${A}st-texnomart.svg" width="32" height="32" alt="">`
+};
+const logoOf = s => LOGO[s.id] || `<span class="ini" aria-hidden="true">${esc(s.n[0])}</span>`;
+const ST = { cat: 'all', q: '', reg: 'tash', geo: false, geoHidden: false, mapCat: 'all', sel: null, id: 'texnomart', amt: 3200000, term: 3, closed: null, br: 0, bq: '' };
+const ST_SCREENS = ['stores', 'storesMap', 'store', 'branches'];
+let hist = [];
+function goSt(id) { if (current === id) return; if (!ST_SCREENS.includes(current)) hist = []; hist.push(current); go(id); }
+function backSt() { go(hist.pop() || 'home', 'back'); }
+const hh = x => String(x % 24).padStart(2, '0') + ':00';
+const cap = s => s[0].toUpperCase() + s.slice(1);
+const dist = m => m < 1000 ? `${m} м` : `${(m / 1000).toFixed(1).replace('.', ',')} км`;
+const days = n => `${n} ${plural(n, 'день', 'дня', 'дней')}`;
+/* open / closes soon / closed, from the real local time; `force` (true/false) overrides it for the demo */
+function stStatus(h, force) {
+  const now = new Date(), m = now.getHours() * 60 + now.getMinutes();
+  let closed = !(m >= h[0] * 60 && m < h[1] * 60);
+  if (force != null) closed = force;
+  if (closed) return { k: 'closed', t: `закрыто до ${hh(h[0])}`, c: '' };
+  if (h[1] * 60 - m <= 60) return { k: 'soon', t: `закроется в ${hh(h[1])}`, c: 's-w' };
+  return { k: 'open', t: `открыто до ${hh(h[1])}`, c: 's-g' };
+}
+const regCount = id => { const r = REGIONS.find(x => x[0] === id); const c = catOf(ST.cat); return Math.max(1, Math.round(r[2] * c.cnt / 312)); };
+const regName = () => REGIONS.find(x => x[0] === ST.reg)[1];
+const icoClose24 = `<img src="${A}st-close24.svg" alt="">`;
+const geoHTML = title => `<div class="geo">
+    <div class="h"><span class="t"><img src="${A}st-pin28.svg" alt=""><span><b>${title}</b><small>Разрешите доступ к геолокации</small></span></span>
+      <button class="x" data-act="geo-x" aria-label="Скрыть">${icoClose24}</button></div>
+    <button class="ok" data-act="geo-ok">Разрешить</button></div>`;
+const mapPill = (act = 'storesMap') => `<button class="mpill" data-act="${act}"><span class="th"><img src="${A}map-thumb.webp" alt=""></span><span class="lb">Магазины на карте<img src="${A}st-chev-right.svg" alt=""></span></button>`;
+const regPill = () => `<button class="reg" data-act="st-reg">${regName()}<img src="${A}st-chev-down.svg" alt=""></button>`;
+
+/* ---------- STORES: list ---------- */
+function stListHTML() {
+  const q = ST.q.trim().toLowerCase();
+  if (ST.reg !== 'tash') {
+    return `<div class="st-head"><h2>${regCount(ST.reg)} ${plural(regCount(ST.reg), 'магазин', 'магазина', 'магазинов')}</h2>${regPill()}</div>
+      <div class="st-empty"><span>В демо доступны только магазины Ташкента</span><button class="ok" data-act="rg-pick" data-reg="tash">Показать Ташкент</button></div>`;
+  }
+  let list = STORES.filter(s => (ST.cat === 'all' || s.cat === ST.cat) && (!q || s.n.toLowerCase().includes(q) || catOf(s.cat).n.toLowerCase().includes(q)));
+  const withSt = list.map(s => ({ s, st: stStatus(s.h) }));
+  withSt.sort((a, b) => (a.st.k === 'closed') - (b.st.k === 'closed') || (ST.geo ? a.s.d - b.s.d : 0));
+  const total = q ? list.length : catOf(ST.cat).cnt;
+  const rows = withSt.map(({ s, st }) => {
+    const second = st.k === 'open' ? `<span>${s.addr}</span>` : `<span class="${st.c}">${ST.geo ? st.t : cap(st.t)}</span>`;
+    return `<button class="srw${st.k === 'closed' ? ' off' : ''}" data-act="store" data-store="${s.id}">
+      <span class="slg">${logoOf(s)}</span>
+      <span class="in"><b>${s.n}</b><span>${ST.geo ? `<span>${dist(s.d)}</span> • ` : ''}${second}</span></span>
+      <span class="tags"><span class="tg">0-0-${s.max}</span>${s.promo ? `<span class="tg w">ещё ${days(s.promo)}</span>` : ''}</span></button>`;
+  }).join('');
+  return `<div class="st-head"><h2>${total} ${plural(total, 'магазин', 'магазина', 'магазинов')}</h2>${regPill()}</div>
+    ${rows ? `<div class="st-list">${rows}</div>` : `<div class="st-empty">Ничего не нашлось</div>`}`;
+}
+render.stores = function () {
+  screens.stores.innerHTML = `<div class="sc-in">
+    <div class="toolbar">${back()}<span class="title">Магазины</span></div>
+    <div class="col"><label class="st-search"><img src="${A}st-search.svg" alt=""><input id="stQ" type="text" enterkeyhint="search" autocomplete="off" placeholder="${tr('Магазин или акция')}" value="${esc(ST.q)}" aria-label="Поиск"><button class="clr" data-act="st-clr" data-q-target="stQ" aria-label="Очистить">${icoClose24}</button></label></div>
+    <div class="cats" role="tablist" aria-label="Категории">${CATS.map(c => `<button class="cat${c.id === ST.cat ? ' on' : ''}" data-act="st-cat" data-cat="${c.id}" role="tab" aria-selected="${c.id === ST.cat}"><span class="b"><img src="${A}${c.img}" alt=""></span>${c.n}</button>`).join('')}</div>
+    <div class="col">${!ST.geo && !ST.geoHidden ? geoHTML('Покажем ближайшие магазины') : ''}<div id="stList">${stListHTML()}</div></div>
+    <div class="st-foot">${mapPill()}</div></div>`;
+};
+
+/* ---------- STORES: map ---------- */
+function fitMap() {
+  const el = screens.storesMap, cv = el && el.querySelector('.mcv'); if (!cv) return;
+  const W = el.clientWidth, H = el.clientHeight; if (!W || !H) return;
+  const s = Math.max(W / 402, H / 874), ox = (W - 402 * s) / 2, oy = (H - 874 * s) / 2;
+  cv.style.transform = `translate(${ox}px,${oy}px) scale(${s})`;
+  el.querySelectorAll('.mlayer [data-x]').forEach(p => { p.style.left = (ox + p.dataset.x * s) + 'px'; p.style.top = (oy + p.dataset.y * s) + 'px'; });
+}
+addEventListener('resize', () => { if (current === 'storesMap') fitMap(); });
+function msheetHTML(s) {
+  const st = stStatus(s.h);
+  return `<div class="msheet" role="dialog" aria-label="${esc(s.n)}">
+    <div class="hd"><div class="t"><div class="nmr"><b>${s.n}</b><span class="tg">0-0-${s.max}</span>${s.promo ? `<span class="tg w l">ещё ${days(s.promo)}</span>` : ''}</div>
+      <div class="sub"><span>${catOf(s.cat).n}</span> • <span class="${st.c}">${st.t}</span></div></div>
+      <button class="x" data-act="mp-x" aria-label="Закрыть"><img src="${A}st-close32.svg" alt=""></button></div>
+    <div class="mbxs"><div class="mbx f"><small>Адрес</small><span>${s.addr}</span></div><div class="mbx"><small>Пешком</small><span>${dist(s.d)}</span></div></div>
+    <div class="macts"><button class="btn2 soft" data-act="soon">Маршрут</button><button class="btn2 pri" data-act="store" data-store="${s.id}">О магазине</button></div></div>`;
+}
+render.storesMap = function () {
+  const sel = ST.sel && STORES.find(s => s.id === ST.sel);
+  const pins = STORES.filter(s => s.x != null && (ST.mapCat === 'all' || s.cat === ST.mapCat));
+  const pinHTML = s => s.id === ST.sel
+    ? `<button class="mk" data-x="${s.x - 3}" data-y="${s.y - 33}" data-act="mp-pin" data-store="${s.id}" aria-label="${esc(s.n)}"><img src="${A}mp-marker.svg" alt=""><img class="h" src="${A}mp-hissa.svg" alt=""></button>`
+    : `<button class="pin" data-x="${s.x}" data-y="${s.y}" data-act="mp-pin" data-store="${s.id}"><span class="ic"><img src="${A}${catOf(s.cat).pin}" alt=""></span><span class="nm">${s.n}<i>0-0-${s.max}</i></span></button>`;
+  screens.storesMap.innerHTML = `
+    <div class="mcv"><img src="${A}map-full.webp" alt="Карта магазинов рядом"></div>
+    <div class="mlayer"><span class="me" data-x="247" data-y="435"><img src="${A}mp-me.svg" alt=""></span>${pins.map(pinHTML).join('')}</div>
+    <button class="msend" data-act="soon" aria-label="Моё местоположение"><img src="${A}mp-send.svg" alt=""></button>
+    <div class="mfade"></div>
+    <div class="toolbar mtb">${back()}<span class="title">Магазины на карте</span></div>
+    <div class="mchips" role="tablist" aria-label="Категории">${MAP_CATS.map(id => { const c = catOf(id), on = id === ST.mapCat; return `<button class="mchip${on ? ' on' : ''}" data-act="mp-chip" data-cat="${id}" role="tab" aria-selected="${on}"><img src="${A}${on && c.chipOn ? c.chipOn : c.chip}" alt="">${c.n}</button>`; }).join('')}</div>
+    ${sel ? msheetHTML(sel) : `<div class="mbot"><button class="mpill" data-act="st-list"><span class="ls"><img src="${A}ls-row1.svg" style="top:1px" alt=""><img src="${A}ls-row2.svg" style="top:15px" alt=""><img src="${A}ls-row2.svg" style="top:29px" alt=""></span><span class="lb">Магазины списком<img src="${A}st-chev-right.svg" alt=""></span></button></div>`}`;
+  fitMap(); requestAnimationFrame(fitMap);
+};
+
+/* ---------- STORES: store card ---------- */
+function termInfo(s, t) {
+  const free = t <= s.max, mk = t === 3 ? 0 : t === 6 ? .05 : .15;
+  return { free, mk: free ? 0 : mk, base: Math.round(mk * 100), cb: { 3: '1%', 6: '1,5%', 12: '2%' }[t], promo: free && t > 3 && t === s.max && s.promo };
+}
+function stCalcHTML(s) {
+  const A0 = ST.amt, ok = A0 <= S.limit;
+  const rows = [3, 6, 12].map(t => {
+    const ti = termInfo(s, t), total = Math.round(A0 * (1 + ti.mk));
+    return `<button class="mr${ST.term === t ? ' on' : ''}" data-act="st-t" data-t="${t}" aria-pressed="${ST.term === t}"><span class="c"><b>${t} мес</b><small><span>итого ${fmt(total)}</span> • <span>${ti.mk ? `переплата ${fmt(total - A0)}` : 'без переплаты'}</span></small></span><span class="tnum">${fmt(total / t)} сум</span></button>`;
+  }).join('');
+  return `<div class="lst"><span class="hcard"><img class="el" src="${A}st-ellipse.svg" alt=""><img class="ic" src="${A}st-hissa.svg" alt=""><span>hissa</span></span>
+      <span class="t">${ok ? '<b>Хватает лимита</b>' : `<b class="w">Не хватает ${fmt(A0 - S.limit)} сум</b>`}<small>Доступно ${fmt(S.limit)} сум</small></span></div>
+    <div class="mrows" role="group" aria-label="Срок">${rows}</div>`;
+}
+render.store = function () {
+  const s = STORES.find(x => x.id === ST.id), brs = branchesOf(s), b = brs[Math.min(ST.br, brs.length - 1)];
+  const st = stStatus(b.h, ST.closed), closed = st.k === 'closed';
+  const terms = [3, 6, 12].map(t => {
+    const ti = termInfo(s, t);
+    return `<div class="trow"><b>${t} мес</b><div class="i"><div class="v"><span class="${ti.free ? 's-g' : ''}">${ti.free ? 'без переплаты' : `переплата ${ti.base}%`}</span>${ti.promo ? `<span class="tg w">акция • ещё ${days(s.promo)}</span>` : ''}</div>
+      <small>${ti.promo ? `после акции переплата ${ti.base}% • кэшбэк ${ti.cb}` : `кэшбэк ${ti.cb}`}</small></div></div>`;
+  }).join('');
+  const site = s.n.toLowerCase().replace(/[^a-z0-9]/g, '') + '.uz';
+  screens.store.innerHTML = `<div class="sc-in">
+    <div class="toolbar">${back()}<span class="title">Магазины</span></div>
+    <div class="col sto">
+      <div class="sto-h"><span class="lg">${logoOf(s)}</span><div class="t"><h1>${s.n}</h1>
+        <button class="stat" data-act="st-status" title="Демо: переключить открыто/закрыто"><span>${catOf(s.cat).n}</span> • <span class="${st.c}">${st.t}</span></button></div></div>
+      <div class="scard"><h3>Условия рассрочки</h3>${terms}
+        <div class="bnk"><img src="${A}st-ipoteka.svg" alt="">Рассрочка от Ipoteka Bank</div></div>
+      <div class="scard"><h3>Платёж в месяц</h3>
+        <label class="samt"><span class="f"><small>Сумма покупки</small><input id="stAmt" class="tnum" inputmode="numeric" autocomplete="off" value="${fmt(ST.amt)}" aria-label="Сумма покупки"></span><span>сум</span></label>
+        <div id="stCalc" style="display:flex;flex-direction:column;gap:16px">${stCalcHTML(s)}</div></div>
+      <div class="scard"><h3>Как оплатить</h3>
+        <div class="pmr"><span class="im"><img src="${A}pay-card.webp" alt=""></span><span class="t"><b>Картой на кассе</b><span>3 мес без переплаты</span></span></div>
+        <div class="pmr"><span class="im"><img src="${A}pay-qr.webp" alt=""></span><span class="t"><b>По QR в Hissa</b><span>Все сроки и акции</span></span></div></div>
+      <div class="scard"><div class="bh"><h3>${ST.br ? 'Выбранный филиал' : 'Ближайший филиал'}</h3>${brs.length > 1 ? `<button data-act="branches">Все • ${brs.length}<img src="${A}st-chev-coral.svg" alt=""></button>` : ''}</div>
+        <div class="baddr"><b>${b.a}</b><span><span>${Math.max(1, Math.round(b.d / 75))} мин пешком</span> • <span>ежедневно ${hh(b.h[0])}–${hh(b.h[1])}</span></span></div>
+        <div class="obtns"><button class="obtn" data-act="soon"><img src="${A}st-map.svg" alt="">Маршрут</button><button class="obtn" data-act="soon"><img src="${A}st-phone20.svg" alt="">Позвонить</button></div></div>
+      <div class="scard ct"><h3>Контакты</h3>
+        <button class="lnk" data-act="soon"><img src="${A}st-phone.svg" alt=""><span class="tnum">+998 71 200 00 00</span><img src="${A}st-chev-grey.svg" alt=""></button>
+        <button class="lnk" data-act="soon"><img src="${A}st-globe.svg" alt=""><span>${site}</span><img src="${A}st-chev-grey.svg" alt=""></button></div>
+    </div>
+    <div class="st-cta${closed ? ' closed' : ''}">${closed ? `<p>Магазин закрыт до ${hh(b.h[0])}</p>` : ''}<button class="cta" data-act="scan"><img src="${A}scan-alt.svg" alt="">Оплатить по QR</button></div></div>`;
+};
+
+/* ---------- STORES: branches ---------- */
+function brListHTML() {
+  const s = STORES.find(x => x.id === ST.id), q = ST.bq.trim().toLowerCase();
+  const list = branchesOf(s).map((b, i) => ({ b, i, st: stStatus(b.h) })).filter(x => !q || x.b.a.toLowerCase().includes(q));
+  list.sort((a, b) => (a.st.k === 'closed') - (b.st.k === 'closed') || a.b.d - b.b.d);
+  const rows = list.map(({ b, i, st }) => `<button class="brw${st.k === 'closed' ? ' off' : ''}" data-act="br-pick" data-br="${i}">
+      <span class="ic"><img src="${A}st-pin.svg" alt=""></span>
+      <span class="t"><b>${b.a}</b><span><span>${dist(b.d)}</span> • <span class="${st.c}">${st.t}</span></span></span>
+      ${b.max ? `<span class="tg">0-0-${b.max}</span>` : ''}<img src="${A}${st.k === 'closed' ? 'st-chev-dark.svg' : 'st-chev-grey.svg'}" alt=""></button>`).join('');
+  const n = q ? list.length : branchesOf(s).length;
+  return `<div class="st-head" style="margin-top:16px"><h2>${n} ${plural(n, 'филиал', 'филиала', 'филиалов')}</h2>${regPill()}</div>
+    ${rows ? `<div class="br-list">${rows}</div>` : `<div class="st-empty">Ничего не нашлось</div>`}`;
+}
+render.branches = function () {
+  const s = STORES.find(x => x.id === ST.id);
+  screens.branches.innerHTML = `<div class="sc-in">
+    <div class="toolbar">${back()}<span class="title">Филиалы ${s.n}</span></div>
+    <div class="col"><label class="st-search"><img src="${A}st-search.svg" alt=""><input id="brQ" type="text" enterkeyhint="search" autocomplete="off" placeholder="${tr('Улица или торговый центр')}" value="${esc(ST.bq)}" aria-label="Поиск"><button class="clr" data-act="st-clr" data-q-target="brQ" aria-label="Очистить">${icoClose24}</button></label>
+      ${!ST.geo && !ST.geoHidden ? geoHTML('Покажем ближайшие филиалы').replace('class="geo"', 'class="geo" style="margin-top:16px"') : ''}
+      <div id="brList">${brListHTML()}</div></div>
+    <div class="st-foot">${mapPill()}</div></div>`;
+};
+
+function regionSheet() {
+  const c = ST.cat !== 'all' ? catOf(ST.cat).n : '';
+  sheet(`<div class="rg-h"><b>Регион${c ? ` <i>• <span>${c}</span></i>` : ''}</b><button data-act="sheet-x" aria-label="Закрыть"><img src="${A}st-close32.svg" alt=""></button></div>
+    <div class="rg-list">${REGIONS.map(([id, n]) => `<button class="rg" data-act="rg-pick" data-reg="${id}" aria-pressed="${id === ST.reg}"><span class="t"><b>${n}<i>• ${regCount(id)}</i></b>${id === 'tash' ? '<small>Вы находитесь здесь</small>' : ''}</span><span class="c">${id === ST.reg ? `<img src="${A}st-check.svg" alt="Выбран">` : ''}</span></button>`).join('')}</div>`);
+}
+function refreshIn(id, html) { const n = $('#' + id); if (!n) return; n.innerHTML = html; translateTree(n); }
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.id === 'stQ') { ST.q = t.value; refreshIn('stList', stListHTML()); }
+  else if (t.id === 'brQ') { ST.bq = t.value; refreshIn('brList', brListHTML()); }
+  else if (t.id === 'stAmt') {
+    const v = Math.min(99999999, +t.value.replace(/\D/g, '') || 0);
+    ST.amt = v; t.value = v ? fmt(v) : '';
+    try { t.setSelectionRange(t.value.length, t.value.length); } catch (er) {}
+    refreshIn('stCalc', stCalcHTML(STORES.find(x => x.id === ST.id)));
+  }
+});
+/* returns true when the click was a stores-section action */
+function storesAct(a, t) {
+  switch (a) {
+    case 'stores': if (hist[hist.length - 1] === 'stores' && current === 'storesMap') backSt(); else goSt('stores'); return true;
+    case 'storesMap': ST.sel = null; if (hist[hist.length - 1] === 'storesMap') backSt(); else goSt('storesMap'); return true;
+    case 'st-list': if (hist[hist.length - 1] === 'stores') backSt(); else goSt('stores'); return true;
+    case 'store': {
+      const id = t.dataset.store || 'texnomart';
+      if (id !== ST.id) { ST.id = id; ST.br = 0; ST.bq = ''; ST.closed = null; ST.term = 3; }
+      goSt('store'); return true;
+    }
+    case 'branches': goSt('branches'); return true;
+    case 'st-cat': ST.cat = t.dataset.cat; rr('stores'); return true;
+    case 'st-reg': regionSheet(); return true;
+    case 'rg-pick': ST.reg = t.dataset.reg; closeSheet(); rr(current); return true;
+    case 'geo-ok': ST.geo = true; rr(current); return true;
+    case 'geo-x': ST.geoHidden = true; rr(current); return true;
+    case 'st-clr': { const inp = $('#' + t.dataset.qTarget); if (inp) { inp.value = ''; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus(); } return true; }
+    case 'st-t': ST.term = +t.dataset.t; refreshIn('stCalc', stCalcHTML(STORES.find(x => x.id === ST.id))); return true;
+    case 'st-status': { const s = STORES.find(x => x.id === ST.id), b = branchesOf(s)[ST.br]; ST.closed = stStatus(b.h, ST.closed).k !== 'closed'; rr('store'); return true; }
+    case 'mp-chip': ST.mapCat = t.dataset.cat; if (ST.sel && ST.mapCat !== 'all' && catOf(STORES.find(s => s.id === ST.sel).cat).id !== ST.mapCat) ST.sel = null; rr('storesMap'); return true;
+    case 'mp-pin': ST.sel = ST.sel === t.dataset.store ? null : t.dataset.store; rr('storesMap'); return true;
+    case 'mp-x': ST.sel = null; rr('storesMap'); return true;
+    case 'br-pick': ST.br = +t.dataset.br; ST.closed = null; if (hist[hist.length - 1] === 'store') backSt(); else goSt('store'); return true;
+  }
+  return false;
+}
+
 /* ---------- SHEETS ---------- */
 function sheet(html) {
   closeSheet(true);
@@ -1169,6 +1655,7 @@ document.addEventListener('click', e => {
   if (t.dataset.card) { co.card = t.dataset.card; closeSheet(); rr('checkout'); return; }
   const a = t.dataset.act;
   e.stopPropagation();
+  if (storesAct(a, t)) return;
   switch (a) {
     case 'soon': toast(SOON); break;
     case 'scan': S.coachDone = true; go('scan'); break;
@@ -1177,6 +1664,7 @@ document.addEventListener('click', e => {
     case 'bio': pfBio = !pfBio; rr('profile'); break;
     case 'coach-x': S.coachDone = true; rr('home'); break;
     case 'back':
+      if (ST_SCREENS.includes(current)) { backSt(); break; }
       if (current === 'scan' || current === 'checkout' || current === 'limit' || current === 'profile') go('home', 'back');
       else if (current === 'receipt') go('success', 'back');
       break;
