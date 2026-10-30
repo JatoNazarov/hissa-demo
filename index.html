@@ -11,7 +11,7 @@
 <meta name="description" content="Интерактивный прототип приложения Hissa: оплата по QR в рассрочку">
 <link rel="icon" href="assets/hissa-icon.svg" type="image/svg+xml">
 <script>
-window.__BUILD = '20261030110251';
+window.__BUILD = '20261030110821';
 (function () {
   // GitHub Pages caches pages for ~10 min. If a newer build exists, reload once with a cache-busting query.
   try {
@@ -623,13 +623,11 @@ img{display:block;max-width:none}
 .lst .t b.w{color:#f59e0b}
 .lst .t small{font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text2)}
 .mrows{display:flex;flex-direction:column;gap:12px}
-.mr{display:flex;align-items:center;gap:16px;width:calc(100% + 24px);margin:-6px -12px;padding:6px 12px;border-radius:14px;text-align:left;transition:background .2s}
-.mr.on{background:var(--brand-tint)}
+.mr{display:flex;align-items:center;gap:16px}
 .mr .c{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .mr .c b{font-weight:700;font-size:14px;line-height:20px;letter-spacing:-.28px}
 .mr .c small{font-weight:600;font-size:12px;line-height:12px;letter-spacing:-.24px;color:var(--text3)}
 .mr>span{font-weight:700;font-size:16px;line-height:24px;letter-spacing:-.32px;white-space:nowrap}
-.mr.on>span,.mr.on .c b{color:var(--brand)}
 .pmr{display:flex;align-items:center;gap:12px}
 .pmr .im{position:relative;flex:none;width:48px;height:48px;border-radius:16px;background:var(--bg);overflow:hidden}
 .pmr .im img{position:absolute;inset:0;width:48px;height:48px;object-fit:cover}
@@ -1406,7 +1404,7 @@ const LOGO = {
   texnomart: `<img src="${A}st-texnomart.svg" width="32" height="32" alt="">`
 };
 const logoOf = s => LOGO[s.id] || `<span class="ini" aria-hidden="true">${esc(s.n[0])}</span>`;
-const ST = { cat: 'all', q: '', reg: 'tash', geo: false, geoHidden: false, mapCat: 'all', sel: null, id: 'texnomart', amt: 3200000, term: 3, closed: null, br: 0, bq: '' };
+const ST = { cat: 'all', q: '', reg: 'tash', geo: false, geoHidden: false, mapCat: 'all', sel: null, id: 'texnomart', amt: 3200000, closed: null, br: 0, bq: '' };
 const ST_SCREENS = ['stores', 'storesMap', 'store', 'branches'];
 let hist = [];
 function goSt(id) { if (current === id) return; if (!ST_SCREENS.includes(current)) hist = []; hist.push(current); go(id); }
@@ -1508,11 +1506,11 @@ function stCalcHTML(s) {
   const A0 = ST.amt, ok = A0 <= S.limit;
   const rows = [3, 6, 12].map(t => {
     const ti = termInfo(s, t), total = Math.round(A0 * (1 + ti.mk));
-    return `<button class="mr${ST.term === t ? ' on' : ''}" data-act="st-t" data-t="${t}" aria-pressed="${ST.term === t}"><span class="c"><b>${t} мес</b><small><span>итого ${fmt(total)}</span> • <span>${ti.mk ? `переплата ${fmt(total - A0)}` : 'без переплаты'}</span></small></span><span class="tnum">${fmt(total / t)} сум</span></button>`;
+    return `<div class="mr"><span class="c"><b>${t} мес</b><small><span>итого ${fmt(total)}</span> • <span>${ti.mk ? `переплата ${fmt(total - A0)}` : 'без переплаты'}</span></small></span><span class="tnum">${fmt(total / t)} сум</span></div>`;
   }).join('');
   return `<div class="lst"><span class="hcard"><img class="el" src="${A}st-ellipse.svg" alt=""><img class="ic" src="${A}st-hissa.svg" alt=""><span>hissa</span></span>
       <span class="t">${ok ? '<b>Хватает лимита</b>' : `<b class="w">Не хватает ${fmt(A0 - S.limit)} сум</b>`}<small>Доступно ${fmt(S.limit)} сум</small></span></div>
-    <div class="mrows" role="group" aria-label="Срок">${rows}</div>`;
+    <div class="mrows">${rows}</div>`;
 }
 render.store = function () {
   const s = STORES.find(x => x.id === ST.id), brs = branchesOf(s), b = brs[Math.min(ST.br, brs.length - 1)];
@@ -1594,7 +1592,7 @@ function storesAct(a, t) {
     case 'st-list': if (hist[hist.length - 1] === 'stores') backSt(); else goSt('stores'); return true;
     case 'store': {
       const id = t.dataset.store || 'texnomart';
-      if (id !== ST.id) { ST.id = id; ST.br = 0; ST.bq = ''; ST.closed = null; ST.term = 3; }
+      if (id !== ST.id) { ST.id = id; ST.br = 0; ST.bq = ''; ST.closed = null; }
       goSt('store'); return true;
     }
     case 'branches': goSt('branches'); return true;
@@ -1604,7 +1602,6 @@ function storesAct(a, t) {
     case 'geo-ok': ST.geo = true; rr(current); return true;
     case 'geo-x': ST.geoHidden = true; rr(current); return true;
     case 'st-clr': { const inp = $('#' + t.dataset.qTarget); if (inp) { inp.value = ''; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus(); } return true; }
-    case 'st-t': ST.term = +t.dataset.t; refreshIn('stCalc', stCalcHTML(STORES.find(x => x.id === ST.id))); return true;
     case 'st-status': { const s = STORES.find(x => x.id === ST.id), b = branchesOf(s)[ST.br]; ST.closed = stStatus(b.h, ST.closed).k !== 'closed'; rr('store'); return true; }
     case 'mp-chip': ST.mapCat = t.dataset.cat; if (ST.sel && ST.mapCat !== 'all' && catOf(STORES.find(s => s.id === ST.sel).cat).id !== ST.mapCat) ST.sel = null; rr('storesMap'); return true;
     case 'mp-pin': ST.sel = ST.sel === t.dataset.store ? null : t.dataset.store; rr('storesMap'); return true;
